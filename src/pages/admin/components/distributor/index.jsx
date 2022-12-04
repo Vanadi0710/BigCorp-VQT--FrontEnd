@@ -32,9 +32,6 @@ const columns = [
             <>
                 {tags.map((tag) => {
                     let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
                     return (
                         <Tag color={color} key={tag}>
                             {tag.toUpperCase()}
@@ -60,17 +57,7 @@ const columns = [
 const data = [
     {
         key: '1',
-        name: 'Cơ sở 1',
-        code: 'C1',
-        number: '0338691729',
-        address: 'Tây Hồ - Hà Nội',
-        tags: ['Đang mở cửa'],
-        update: 'Xửa',
-        delete: 'Xoá'
-    },
-    {
-        key: '1',
-        code: 'C3',
+        code: 'A1',
         name: 'Cơ sở 1',
         number: '0338691729',
         address: 'Tây Hồ - Hà Nội',
@@ -80,7 +67,17 @@ const data = [
     },
     {
         key: '1',
-        code: 'C2',
+        code: 'A2',
+        name: 'Cơ sở 1',
+        number: '0338691729',
+        address: 'Tây Hồ - Hà Nội',
+        tags: ['Đang mở cửa'],
+        update: 'Xửa',
+        delete: 'Xoá'
+    },
+    {
+        key: '1',
+        code: 'A3',
         name: 'Cơ sở 1',
         number: '0338691729',
         address: 'Tây Hồ - Hà Nội',
@@ -89,7 +86,7 @@ const data = [
         delete: 'Xoá'
     },
 ];
-const ListDealer = () => {
+const Distributors = () => {
 
     const onSearch = (value) => console.log(value);
 
@@ -97,7 +94,7 @@ const ListDealer = () => {
         <Form  component={false}>
             <div>
                 <h3 className='py-3'>
-                    Danh sách / trung tâm bảo hành
+                    Danh sách / đại lý phân phối
                 </h3>
                 <hr/>
                 <div className="row">
@@ -123,4 +120,4 @@ const ListDealer = () => {
         </Form>
     );
 };
-export default ListDealer;
+export default Distributors;

@@ -1,4 +1,4 @@
-import './header.scss';
+import './index.scss';
 const Header = () => {
     return (
         <div className='header-nav'>

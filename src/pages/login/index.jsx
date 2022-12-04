@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-import './login.scss';
-const Login = () => {
+import './index.scss';
+const LogIn = () => {
     return (
         <div className="body">
             <div className="wrapper">
@@ -35,4 +35,4 @@ const Login = () => {
     )
 
 };
-export default Login;
+export default LogIn;

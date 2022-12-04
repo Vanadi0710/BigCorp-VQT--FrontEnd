@@ -1,14 +1,9 @@
-import Login from "./pages/login";
-import SiderBar from "./pages/siderbar";
-import Header from "./pages/component/header";
-import Footer from "./pages/component/footer";
+import Router from './routes'
 
 function App() {
   return (
     <div className="App">
-        <Header/>
-        <SiderBar></SiderBar>
-        <Footer/>
+        <Router />
     </div>
   );
 }

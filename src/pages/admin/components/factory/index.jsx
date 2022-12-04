@@ -89,7 +89,7 @@ const data = [
         delete: 'Xoá'
     },
 ];
-const ListDealer = () => {
+const Factories = () => {
 
     const onSearch = (value) => console.log(value);
 
@@ -123,4 +123,4 @@ const ListDealer = () => {
         </Form>
     );
 };
-export default ListDealer;
+export default Factories;

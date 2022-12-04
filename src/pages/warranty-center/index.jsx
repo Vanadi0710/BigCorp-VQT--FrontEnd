@@ -1,8 +1,8 @@
-const Warranty = () => {
+const WarrantyCenter = () => {
     return (
         <div>
             Warranty
         </div>
     );
 }
-export default Warranty;
+export default WarrantyCenter;
