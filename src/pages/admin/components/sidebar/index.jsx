@@ -14,38 +14,38 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
   getItem("Danh sách", "sub1", <UnorderedListOutlined />, [
-    getItem("List cơ sở sản xuất", "/factories"),
-    getItem("List đại lý phân phối ", "/distributors"),
-    getItem("List trung tâm bảo hành ", "/warranty-centers"),
+    getItem("List cơ sở sản xuất", "factories"),
+    getItem("List đại lý phân phối ", "distributors"),
+    getItem("List trung tâm bảo hành ", "warranty-centers"),
+  ]),
+  getItem("Tổng hợp ", "sub2", <UnorderedListOutlined />, [
+    getItem("Checking sản phẩm", "checking-product"),
+    getItem("Thống kê sản phẩm", "statistics-product"),
+  ]),
+  getItem("Báo cáo ", "sub3", <UnorderedListOutlined />, [
+    getItem("Báo cáo xản suất", "report-factories"),
+    getItem("Báo cáo đại lý ", "report-distributors"),
+    getItem("Báo cáo bảo hành", "report-warranty-centers"),
   ])
 ];
-const SideBar = () => {
+const SideBar = ({setCurrentRoute}) => {
   const navigate = useNavigate();
 
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-2">
-          <Menu
-            onClick={({ key }) => {
-              navigate(key);
-              console.log(key)
-            }}
-            style={{
-              width: 256,
-            }}
-            defaultSelectedKeys={["/factories"]}
-            defaultOpenKeys={["sub1"]}
-            mode="inline"
-            items={items}
-          />
-        </div>
-        <main className="col-md-10">
-      
-        </main>
-      </div>
-      <Outlet />
-    </div>
+
+      <Menu
+          onClick={({key}) => {
+            navigate(key)
+              setCurrentRoute(key)
+          }}
+          style={{
+            width: 256,
+          }}
+           defaultSelectedKeys={["factories"]}
+          defaultOpenKeys={["sub1"]}
+          mode="inline"
+          items={items}
+      />
   );
 };
 export default SideBar;

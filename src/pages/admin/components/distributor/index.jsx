@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Form, Input, InputNumber, Popconfirm, Table, Tag, Typography} from 'antd';
+import {Form, Input, InputNumber, Popconfirm, Table, Tag, Select} from 'antd';
 import {PlusOutlined} from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 const columns = [
@@ -66,7 +66,7 @@ const data = [
         delete: 'Xoá'
     },
     {
-        key: '1',
+        key: '2',
         code: 'A2',
         name: 'Cơ sở 1',
         number: '0338691729',
@@ -76,7 +76,7 @@ const data = [
         delete: 'Xoá'
     },
     {
-        key: '1',
+        key: '3',
         code: 'A3',
         name: 'Cơ sở 1',
         number: '0338691729',
@@ -86,11 +86,15 @@ const data = [
         delete: 'Xoá'
     },
 ];
-const Distributors = () => {
+const DistributorsAdmin = () => {
 
     const onSearch = (value) => console.log(value);
+    const handleChange = (value) => {
+        console.log(`selected ${value}`);
+    }
 
-    return (
+
+        return (
         <Form  component={false}>
             <div>
                 <h3 className='py-3'>
@@ -101,9 +105,37 @@ const Distributors = () => {
                     <div className="col-2">
                         <button className="btn btn-primary py-2"><PlusOutlined />Thêm cơ sở</button>
                     </div>
-                    <div className="col-7">
+                    <div className="col-2">
+                        <Select
+                            size = "large"
+                            defaultValue=""
+                            style={{
+                                width: 200,
+                            }}
+                            onChange={handleChange}
+                            options={[
+                                {
+                                    options: [
+                                        {
+                                            label: 'Tìm theo tên',
+                                            value: 'name',
+                                        },
+                                    ],
+                                },
+                                {
+                                    options: [
+                                        {
+                                            label: 'Tìm theo địa chỉ',
+                                            value: 'địa chỉ',
+                                        },
+                                    ],
+                                },
+                            ]}
+                        />
+                    </div>
+                    <div className="col-5">
                         <Search
-                            placeholder="Nhập tên cơ sở....."
+                            placeholder="Nhập từ khoá tìm kiếm ....."
                             allowClear
                             enterButton="Search"
                             size="large"
@@ -120,4 +152,4 @@ const Distributors = () => {
         </Form>
     );
 };
-export default Distributors;
+export default DistributorsAdmin;

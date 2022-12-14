@@ -1,38 +1,77 @@
 import React from 'react';
+import {LockOutlined, MailOutlined, UserOutlined} from '@ant-design/icons';
 import { Button, Checkbox, Form, Input } from 'antd';
 import './index.scss';
-const LogIn = () => {
+const App = () => {
+    const onFinish = (values) => {
+        console.log('Received values of form: ', values);
+    };
     return (
         <div className="body">
             <div className="wrapper">
-                <section className="form login">
-                    <h2 className="text-center">Đăng nhập hệ thống</h2>
+                <h2  className="text-center py-4">Đăng nhập hệ thống</h2>
+                <div className="px-5">
+                    <Form
+                        name="normal_login"
+                        className="login-form"
+                        initialValues={{
+                            remember: true,
+                        }}
+                        onFinish={onFinish}
+                    >
+                        <label><h6>Email:</h6></label>
+                        <Form.Item
+                            name="username"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Email không được bỏ trống !',
+                                },
+                            ]}
+                        >
+                            <Input size="large"  prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Nhập email...." />
+                        </Form.Item>
+                        <label><h6>Password:</h6></label>
+                        <Form.Item
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Mật khẩu không được bỏ trống !',
+                                },
+                            ]}
+                        >
+                            <Input
+                                size="large"
+                                prefix={<LockOutlined className="site-form-item-icon" />}
+                                type="password"
+                                placeholder="Nhập password...."
+                            />
+                        </Form.Item>
 
-                    <div className="error-text">
-                        Xin vui lòng kiểm tra lại dữ liệu phập vào!
 
-                    </div>
-                    <form action="#" method="">
-                        <div className="field input">
-                            <label>Email Address</label>
-                            <input type="text" name="email" placeholder="Enter your email" ></input>
-                        </div>
-                        <div className="field input">
-                            <label>Password</label>
-                            <input type="password" name="password" placeholder="Enter your password"></input>
-                        </div>
-                        <div className="field button">
-                            <input type="submit" name="submit" value="Đăng nhập"></input>
-                        </div>
-                    </form>
+                        <div className="text-center">
+                            <Form.Item>
 
-                    <a className="back_home forgot_password text-center" >Quên mật khẩu ?</a>
-                </section>
+                                <a className="login-form-forgot" href="">
+                                    Quyên mật khẩu ?
+                                </a>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button size="large" type="primary" htmlType="submit" className="login-form-button">
+                                    Đăng nhập hệ thống
+                                </Button>
+
+                            </Form.Item>
+                        </div>
+
+                    </Form>
+                </div>
 
             </div>
 
         </div>
-    )
 
+    );
 };
-export default LogIn;
+export default App;
