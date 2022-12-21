@@ -2,9 +2,9 @@ import LogIn from "../pages/login";
 import { Route, Routes } from "react-router-dom";
 import PageNotFound from "../pages/not-found";
 import Admin from "../pages/admin";
-import Distributor from "../pages/distributor";
+// import Distributor from "../pages/distributor";
 import Factory from "../pages/factory";
-import WarrantyCenter from "../pages/warranty-center";
+// import WarrantyCenter from "../pages/warranty-center";
 import DistributorsAdmin from "../pages/admin/components/distributor";
 import FactoriesAdmin from "../pages/admin/components/factory";
 import WarrantyCenterAdmin from "../pages/admin/components/warranty-center";
@@ -14,7 +14,7 @@ import StatisticProduct from "../pages/admin/components/static-product";
 
 
 
-const Router = () => {
+const Router = ({notify}) => {
   return (
     <Routes>
       <Route path="admin" element={<Admin />}>
@@ -29,8 +29,8 @@ const Router = () => {
       </Route>
       {/*<Route path="/distributor" element={<Distributor />}></Route>*/}
       {/*<Route path="/warranty-center" element={<WarrantyCenter />}></Route>*/}
-      <Route path="/sign-in" element={<LogIn />} />
-      {/*<Route path="*" element={<PageNotFound />} />*/}
+      <Route path="/sign-in" element={<LogIn notify={notify}/>} />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

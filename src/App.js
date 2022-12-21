@@ -1,11 +1,18 @@
-import Router from './routes'
-import Admin from "./pages/admin";
+import Router from "./routes";
+import { BrowserRouter } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
+  const notify = (msg, type = "SUCCESS") => {
+    toast.success(msg, { type: toast.TYPE[type] });
+  };
+
   return (
-    <div className="App">
-       <Router/>
-    </div>
+    <BrowserRouter>
+      <ToastContainer />
+      <Router notify={notify} />
+    </BrowserRouter>
   );
 }
 

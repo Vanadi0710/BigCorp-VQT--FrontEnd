@@ -1,22 +1,21 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { reqRefreshToken } from "../redux/slice/auth.slice";
-import { store } from "../redux/store";
+import { axiosConfig } from "../config/axios.config";
 
 export const Axios = axios.create({
-  timeout: 15000,
-  baseURL: process.env.REACT_APP_BACK_END_URL + "/api/v1",
+  timeout: axiosConfig.timeout,
+  baseURL: axiosConfig.baseURL,
 });
 
 export const AxiosAuth = axios.create({
-  timeout: 15000,
-  baseURL: process.env.REACT_APP_BACK_END_URL + "/api/v1",
+  timeout: axiosConfig.timeout,
+  baseURL: axiosConfig.baseURL,
 });
 
 AxiosAuth.interceptors.request.use(
   async (config) => {
-    let { auth } = store.getState("auth");
-    let { accessToken, refreshToken } = auth.account;
+    let accessToken = localStorage.getItem('accessToken')
+    let refreshToken = localStorage.getItem('refreshToken')
     if (!accessToken) return config;
 
     let date = new Date();
@@ -36,8 +35,7 @@ AxiosAuth.interceptors.request.use(
     // request refresh token when access token is expired
     try {
       let { data } = await Axios.post("/auth/refresh-token", { refreshToken });
-
-      store.dispatch(reqRefreshToken(data.accessToken));
+      localStorage.setItem('accessToken', data.accessToken)
       config.headers["authorization"] = "Bearer " + data.accessToken;
     } catch (err) {
       alert(err.response?.data);
