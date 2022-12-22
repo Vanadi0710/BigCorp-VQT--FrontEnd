@@ -1,4 +1,14 @@
 .header-nav {
   height: 80px;
-  background: white;
+  background: rgba(145, 213, 255, 0.82);
+  .logo-header {
+    position: absolute;
+    width: 4%;
+    height: auto;
+    border-radius: 30%;
+    top: 4px;
+  }
+  h3 {
+    padding-left: 80px;
+  }
 }

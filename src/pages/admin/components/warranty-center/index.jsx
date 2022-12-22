@@ -110,7 +110,7 @@ const WarrantyCenterAdmin = () => {
                     <div className="col-2">
                         <Select
                             size = "large"
-                            defaultValue="lucy"
+                            defaultValue="Tìm kiếm theo tên"
                             style={{
                                 width: 200,
                             }}
