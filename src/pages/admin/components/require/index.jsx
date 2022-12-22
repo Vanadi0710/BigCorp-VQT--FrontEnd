@@ -14,6 +14,7 @@ import {
     Checkbox,
     Upload,
 } from 'antd';
+import ListRequire from "./listRequire";
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const Require = () => {
@@ -77,6 +78,7 @@ const Require = () => {
                 <Form.Item label="Hoạt động ">
                     <Button>Gửi yêu cầu</Button>
                 </Form.Item>
+                <ListRequire/>
             </Form>
         </>
     );

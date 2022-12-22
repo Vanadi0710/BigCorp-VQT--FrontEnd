@@ -13,20 +13,19 @@ function getItem(label, key, icon, children, type) {
   };
 }
 const items = [
-  getItem("Danh sách", "sub1", <UnorderedListOutlined />, [
-    getItem("List cơ sở sản xuất", "factories"),
-    getItem("List đại lý phân phối ", "distributors"),
-    getItem("List trung tâm bảo hành ", "warranty-centers"),
+  getItem("Quản lý", "sub1", <UnorderedListOutlined />, [
+    getItem("Quản lý tài khoản", ""),
+    getItem("Quản lý sản phẩm", ""),
+
   ]),
   getItem("Tổng hợp ", "sub2", <UnorderedListOutlined />, [
-    getItem("Tạo yêu cầu", "require"),
     getItem("Checking sản phẩm", "checking-product"),
     getItem("Thống kê sản phẩm", "statistics-product"),
   ]),
-  getItem("Báo cáo ", "sub3", <UnorderedListOutlined />, [
-    getItem("Báo cáo xản suất", "report-factories"),
-    getItem("Báo cáo đại lý ", "report-distributors"),
-    getItem("Báo cáo bảo hành", "report-warranty-centers"),
+  getItem("Thống kê  ", "sub3", <UnorderedListOutlined />, [
+    getItem("Cơ xản suất", "report-factories"),
+    getItem("Đại lý ", "report-distributors"),
+    getItem("Bảo hành", "report-warranty-centers"),
   ])
 ];
 const SideBar = ({setCurrentRoute}) => {

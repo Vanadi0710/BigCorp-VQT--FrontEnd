@@ -3,9 +3,7 @@ import Header from "../../components/header";
 import React, {useState} from "react";
 
 import {Outlet, useLocation} from "react-router-dom";
-// import FactoriesAdmin from "./components/factory";
-// import DistributorsAdmin from "./components/distributor";
-// import WarrantyCenterAdmin from "./components/warranty-center";
+
 const Admin = () => {
     const [currentRoute, setCurrentRoute] = useState('factories')
     return (
