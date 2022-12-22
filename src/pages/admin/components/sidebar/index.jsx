@@ -19,6 +19,7 @@ const items = [
     getItem("List trung tâm bảo hành ", "warranty-centers"),
   ]),
   getItem("Tổng hợp ", "sub2", <UnorderedListOutlined />, [
+    getItem("Tạo yêu cầu", "require"),
     getItem("Checking sản phẩm", "checking-product"),
     getItem("Thống kê sản phẩm", "statistics-product"),
   ]),
