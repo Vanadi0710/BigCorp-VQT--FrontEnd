@@ -26,7 +26,7 @@ const Header = () => {
         <div className='header-nav header-menu'>
              <div className="row">
                  <div className="col-10 py-4 px-5 d-flex">
-                     <img className="logo-header" src={require("../../assets/images/logo/logo.png")}/>
+                     <img className="logo-header" src={require("../../assets/images/logo/logo.png")} alt="product"/>
                      <h3>Product</h3>
                  </div>
                  <div className="col-2 py-4">
@@ -43,7 +43,6 @@ const Header = () => {
                              </Space>
                          </Button>
                      </Dropdown>
-
                  </div>
              </div>
         </div>

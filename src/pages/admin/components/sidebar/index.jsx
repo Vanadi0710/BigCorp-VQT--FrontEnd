@@ -14,7 +14,7 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
   getItem("Quản lý", "sub1", <UnorderedListOutlined />, [
-    getItem("Quản lý tài khoản", ""),
+    getItem("Quản lý tài khoản", "accounts"),
     getItem("Quản lý sản phẩm", "manage-product"),
 
   ]),

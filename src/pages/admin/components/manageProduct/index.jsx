@@ -1,107 +1,79 @@
-import {Form, Select, Table, Tag} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
-import Search from "antd/es/input/Search";
-import React from "react";
+import { Form, Table } from "antd";
+import React, { useState, useEffect } from "react";
+import productAPI from "../../../../api/product.api";
+import { PAGE_SIZE } from "../../../../constants/";
+import { useNavigate } from "react-router-dom";
 
-const columns = [
-    {
-        title: 'Hãng sản phẩm',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Tên sản phẩm',
-        dataIndex: 'nameProduct',
-        key: 'nameProduct',
-    },
-    {
-        title: 'Thao tác',
-        dataIndex: 'active',
-        key: 'active',
-        render: (text) => <button className="btn btn-primary">{text}</button>
-    },
-
-
-];
-const data = [
-    {
-        key: '1',
-        name: 'Apple',
-        nameProduct: 'Macbook',
-        active: 'chi tiết',
-        img: [
-            {
-                src: '',
-            }
-        ],
-        content: "",
-        all: "all information"
-    },
-    {
-        key: '2',
-        name: 'Apple',
-        nameProduct: 'iphone',
-        active: 'chi tiết',
-        img: [
-            {
-                src: '',
-            }
-        ]
-    },
-    {
-        key: '3',
-        name: 'Apple',
-        nameProduct: 'air ports',
-        active: 'chi tiết',
-        img: [
-            {
-                src: '',
-            }
-        ]
-    },
-    {
-        key: '4',
-        name: 'assus',
-        nameProduct: 'product',
-        active: 'chi tiết',
-        img: [
-            {
-                src: '',
-            }
-        ]
-    },
-    {
-        key: '1',
-        name: 'samsung',
-        nameProduct: 'zip',
-        active: 'chi tiết',
-        img: [
-            {
-                src: '',
-            }
-        ]
-    },
-
-];
 const ManageProduct = () => {
+  const columns = [
+    {
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Hãng sản phẩm",
+      dataIndex: "brand",
+      key: "brand",
+    },
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "productName",
+      key: "productName",
+    },
+    {
+      title: "Thao tác",
+      key: "action",
+      render: (product) => (
+        <button
+          onClick={() => redirectToProductDetails(product)}
+          className="btn btn-primary"
+        >
+          chi tiết
+        </button>
+      ),
+    },
+  ];
 
-    const onSearch = (value) => console.log(value);
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    }
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
+  const redirectToProductDetails = (product) => {
+    navigate(`/products/${product._id}`);
+  };
 
-    return (
-        <Form  component={false}>
-            <div>
-                <h3 className='py-3'>
-                    Quản lý sản phẩm
-                </h3>
-                <hr/>
-            </div>
-            <Table columns={columns} dataSource={data} size="small"
-            />
-        </Form>
-    );
+  const getProducts = async () => {
+    let products = await productAPI.getProducts();
+    products = products.map((product, index) => {
+      return {
+        ...product,
+        brand: product?.productLine?.brand,
+        key: index,
+        id: index + 1,
+      };
+    });
+    setProducts(products);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  return (
+    <Form component={false}>
+      <div>
+        <h3 className="py-3">Quản lý sản phẩm</h3>
+        <hr />
+      </div>
+      <Table
+        columns={columns}
+        dataSource={products}
+        size="small"
+        pagination={{
+          pageSize: PAGE_SIZE,
+        }}
+      />
+    </Form>
+  );
 };
 export default ManageProduct;

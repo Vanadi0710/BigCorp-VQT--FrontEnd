@@ -29,14 +29,14 @@ const LogIn = ({ notify }) => {
             onFinish={onFinish}
           >
             <label>
-              <h6>Email:</h6>
+              <h6>Username:</h6>
             </label>
             <Form.Item
               name="username"
               rules={[
                 {
                   required: true,
-                  message: "Email không được bỏ trống !",
+                  message: "User không được bỏ trống !",
                 },
               ]}
             >
