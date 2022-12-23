@@ -12,6 +12,7 @@ import StatisticProduct from "../pages/admin/components/static-product";
 import Require from "../pages/admin/components/require";
 import Information from "../pages/admin/components/information";
 import Distributor from "../pages/distributor";
+import ManageProduct from "../pages/admin/components/manageProduct";
 
 
 
@@ -23,7 +24,7 @@ const Router = ({notify}) => {
           <Route path="distributors" element={<DistributorsAdmin />} />
           <Route path="factories" element={<FactoriesAdmin />} />
           <Route path="warranty-centers" element={<WarrantyCenterAdmin />} />
-          <Route path="require" element={<Require/>}/>
+          <Route path="manage-product" element={<ManageProduct/>}/>
           <Route path="checking-product" element={<CheckingProduct/>}/>
           <Route path="statistics-product" element={<StatisticProduct/>}/>
           <Route path="information" element={<Information/>}/>
