@@ -8,7 +8,7 @@ const Information = () => {
                 <h3>Thông tin chi tiết sản phẩm</h3>
             </div>
             <hr/>
-            <div className="row ">
+            <div className="row d-flex align-items-center py-5">
                 <div className="col-4">
                     <h4>Ảnh sản phẩm</h4>
                     <>
@@ -42,6 +42,9 @@ const Information = () => {
                 </div>
                 <div className="col-8">
                     <h4>Thông số cấu hình</h4>
+
+
+                    
 
                 </div>
             </div>

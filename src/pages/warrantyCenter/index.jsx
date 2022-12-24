@@ -1,12 +1,10 @@
-import SideBar from "../distributor/components/sidebar";
+import SideBar from "./components/sidebar";
 import Header from "../../components/header";
 import React, {useState} from "react";
 
 import {Outlet, useLocation} from "react-router-dom";
-// import FactoriesAdmin from "./components/factory";
-// import DistributorsAdmin from "./components/distributor";
-// import WarrantyCenterAdmin from "./components/warranty-center";
-const Distributor = () => {
+
+const WarrantyCenter = () => {
     const [currentRoute, setCurrentRoute] = useState('factories')
     return (
         <>
@@ -27,5 +25,5 @@ const Distributor = () => {
     )
 }
 
-export default Distributor;
+export default WarrantyCenter;
 
