@@ -4,21 +4,24 @@ import PageNotFound from "../pages/not-found";
 import Admin from "../pages/admin";
 import Factory from "../pages/factory";
 import WarrantyCenter from "../pages/warrantyCenter";
-import DistributorsAdmin from "../pages/admin/components/distributor";
-import FactoriesAdmin from "../pages/admin/components/factory";
-import WarrantyCenterAdmin from "../pages/admin/components/warranty-center";
+import DistributorsAdmin from "../pages/admin/components/statistics/distributor";
+import FactoriesAdmin from "../pages/admin/components/statistics/factory";
+import WarrantyCenterAdmin from "../pages/admin/components/statistics/warrantyCenter";
 import CheckingProduct from "../pages/admin/components/checking";
 import StatisticProduct from "../pages/admin/components/static-product";
 import Information from "../pages/admin/components/information";
 import Distributor from "../pages/distributor";
-import ManageProduct from "../pages/admin/components/manageProduct";
-import ManageAccount from "../pages/admin/components/manageAccount";
+import ManageProduct from "../pages/admin/components/management/manageProduct";
+import ManageAccount from "../pages/admin/components/management/manageAccount";
+import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
 
 const Router = ({notify}) => {
   return (
     <Routes>
       <Route path="admin" element={<Admin />}>
-          <Route path="distributors" element={<DistributorsAdmin />} />
+          <Route path="distributors" element={<DistributorsAdmin />} >
+            <Route path=":branchId" element={<DistributorChart />}/>
+          </Route>
           <Route path="factories" element={<FactoriesAdmin />} />
           <Route path="warranty-centers" element={<WarrantyCenterAdmin />} />
           <Route path="manage-product" element={<ManageProduct/>}/>

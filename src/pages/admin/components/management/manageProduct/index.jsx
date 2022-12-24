@@ -1,7 +1,7 @@
 import { Form, Table } from "antd";
 import React, { useState, useEffect } from "react";
-import productAPI from "../../../../api/product.api";
-import { PAGE_SIZE } from "../../../../constants/";
+import productAPI from "../../../../../api/product.api";
+import { PAGE_SIZE } from "../../../../../constants";
 import { useNavigate } from "react-router-dom";
 
 const ManageProduct = () => {

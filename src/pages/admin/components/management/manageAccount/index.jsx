@@ -1,8 +1,8 @@
 import { Table } from "antd";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import accountAPI from "../../../../api/account.api";
-import { PAGE_SIZE } from "../../../../constants";
+import accountAPI from "../../../../../api/account.api";
+import { PAGE_SIZE } from "../../../../../constants";
 
 const ManageAccount = () => {
   const columns = [
