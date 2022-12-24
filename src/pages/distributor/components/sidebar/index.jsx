@@ -15,14 +15,18 @@ function getItem(label, key, icon, children, type) {
 const items = [
     getItem("Thu ngân", "sub2", <UnorderedListOutlined />, [
         getItem("Bán hàng", "cashier"),
-        getItem("Lịch sử bán hàng", "history-cashier"),
-        getItem("Báo cáo doanh thu", "product-cashier"),
-    ]),
+        getItem("Hoá đơn", "history-cashier"),
 
+    ]),
+    getItem("Yêu cầu", "sub2", <UnorderedListOutlined />, [
+        getItem("Nhập hàng", "cashier"),
+        getItem("Tạo yêu cầu ", "history-cashier"),
+
+    ]),
     getItem("Tổng hợp ", "sub2", <UnorderedListOutlined />, [
         getItem("Kho", "store"),
-        getItem("Nhận yêu cầu", "comfirm-require"),
-        getItem("Thống kê sản phẩm", "statistics-product"),
+        getItem("Thống kê doanh số", "comfirm-require"),
+        getItem("Phân tích doanh số", "statistics-product"),
     ]),
 
 ];

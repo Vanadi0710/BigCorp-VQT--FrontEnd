@@ -13,16 +13,15 @@ function getItem(label, key, icon, children, type) {
     };
 }
 const items = [
-    getItem("Thu ngân", "sub2", <UnorderedListOutlined />, [
-        getItem("Bán hàng", "cashier"),
-        getItem("Lịch sử bán hàng", "history-cashier"),
-        getItem("Báo cáo doanh thu", "product-cashier"),
+    getItem("Yêu cầu", "sub1", <UnorderedListOutlined />, [
+        getItem("Nhận hàng", "comfirm-product"),
+        getItem("Tạo yêu cầu", "create-require"),
+        getItem("Kho", "store"),
     ]),
 
-    getItem("Tổng hợp ", "sub2", <UnorderedListOutlined />, [
-        getItem("Kho", "store"),
-        getItem("Nhận yêu cầu", "comfirm-require"),
-        getItem("Thống kê sản phẩm", "statistics-product"),
+    getItem("Thống kê", "sub2", <UnorderedListOutlined />, [
+        getItem("Thống kê sản phẩm", "warranty-static"),
+
     ]),
 
 ];
@@ -39,7 +38,6 @@ const SideBar = ({setCurrentRoute}) => {
             style={{
                 width: 256,
             }}
-            defaultSelectedKeys={["factories"]}
             defaultOpenKeys={["sub1"]}
             mode="inline"
             items={items}

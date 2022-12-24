@@ -2,6 +2,13 @@ import {Button, Form, Image, Modal, Select, Table, Tag} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 import React, {useState} from "react";
+import {
+    Cascader,
+    DatePicker,
+    Input,
+    InputNumber,
+    TreeSelect,
+} from 'antd';
 
 
 
@@ -65,7 +72,7 @@ const data = [
     },
 
 ];
-const ManageProduct = () => {
+const Manufacture = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -83,6 +90,7 @@ const ManageProduct = () => {
     }
 
     const [visible, setVisible] = useState(false);
+    const [open, setOpen] = useState(false);
     const columns = [
         {
             title: 'Hãng sản phẩm',
@@ -98,6 +106,11 @@ const ManageProduct = () => {
             title: 'Thao tác',
             key: 'active',
             render: () => <Button onClick={showModal} type="primary">chi tiết</Button>
+        },
+        {
+            title: 'Hoạt động',
+            key: 'manufacture',
+            render: () => <Button onClick={() => setOpen(true)} type="primary" danger>Sản xuất</Button>
         },
 
 
@@ -150,12 +163,11 @@ const ManageProduct = () => {
     return (
         <Form  component={false}>
             <div>
-                <h3 className='py-3'>
-                    Quản lý sản phẩm
+                <h3 className='py-4'>
+                    Sản xuất hàng hoá
                 </h3>
                 <hr/>
             </div>
-            <Button type="primary">Thêm sản phẩm</Button>
             <Table columns={columns} dataSource={data} size="small"
             />
             <Modal  title="Thông tin chi tiết" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
@@ -195,7 +207,38 @@ const ManageProduct = () => {
                     </div>
                 </div>
             </Modal>
+            <Modal
+                centered
+                open={open}
+                onOk={() => setOpen(false)}
+                onCancel={() => setOpen(false)}
+                width={700}
+            >
+
+                <Form
+                    labelCol={{
+                        span: 4,
+                    }}
+                    wrapperCol={{
+                        span: 14,
+                    }}
+                    layout="horizontal"
+
+
+                >
+                    <div className="py-3"><h3>Xác nhận yêu cầu</h3></div>
+                    <Form.Item label="Nhập số lượng">
+                        <InputNumber />
+                    </Form.Item>
+                    <Form.Item label="Ghi chú">
+                        <Input  placeholder="Ghi chú... "/>
+                    </Form.Item>
+
+                </Form>
+
+
+            </Modal>
         </Form>
     );
 };
-export default ManageProduct;
+export default Manufacture;
