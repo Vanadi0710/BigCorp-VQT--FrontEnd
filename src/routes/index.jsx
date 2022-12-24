@@ -4,16 +4,15 @@ import PageNotFound from "../pages/not-found";
 import Admin from "../pages/admin";
 import Factory from "../pages/factory";
 import WarrantyCenter from "../pages/warrantyCenter";
-import DistributorsAdmin from "../pages/admin/components/distributor";
-import FactoriesAdmin from "../pages/admin/components/factory";
-import WarrantyCenterAdmin from "../pages/admin/components/warranty-center";
+import DistributorsAdmin from "../pages/admin/components/statistics/distributor";
+import FactoriesAdmin from "../pages/admin/components/statistics/factory";
+import WarrantyCenterAdmin from "../pages/admin/components/statistics/warrantyCenter";
 import CheckingProduct from "../pages/admin/components/checking";
 import StatisticProduct from "../pages/admin/components/static-product";
-import Require from "../pages/admin/components/require";
 import Information from "../pages/admin/components/information";
 import Distributor from "../pages/distributor";
-import ManageProduct from "../pages/admin/components/manageProduct";
-import ComfirmProduct from "../pages/warrantyCenter/components/comfirmProduct";
+import ManageProduct from "../pages/admin/components/management/manageProduct";
+import ManageAccount from "../pages/admin/components/management/manageAccount";import ComfirmProduct from "../pages/warrantyCenter/components/comfirmProduct";
 import CreateRequire from "../pages/warrantyCenter/components/createRequire";
 import Manufacture from "../pages/factory/components/manufacture";
 import InputProduct from "../pages/factory/components/inputProduct";
@@ -23,17 +22,19 @@ import StaticError from "../pages/factory/components/static/staticError";
 import OutputProduct from "../pages/factory/components/outputProduct";
 import MakeRequire from "../pages/factory/components/makeRequire";
 
-
-
+import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
 
 const Router = ({notify}) => {
   return (
     <Routes>
       <Route path="admin" element={<Admin />}>
-          <Route path="distributors" element={<DistributorsAdmin />} />
+          <Route path="distributors" element={<DistributorsAdmin />} >
+            <Route path=":branchId" element={<DistributorChart />}/>
+          </Route>
           <Route path="factories" element={<FactoriesAdmin />} />
           <Route path="warranty-centers" element={<WarrantyCenterAdmin />} />
           <Route path="manage-product" element={<ManageProduct/>}/>
+          <Route path="accounts" element={<ManageAccount />} />
           <Route path="checking-product" element={<CheckingProduct/>}/>
           <Route path="statistics-product" element={<StatisticProduct/>}/>
           <Route path="information" element={<Information/>}/>

@@ -14,7 +14,7 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
   getItem("Quản lý", "sub1", <UnorderedListOutlined />, [
-    getItem("Quản lý tài khoản", ""),
+    getItem("Quản lý tài khoản", "accounts"),
     getItem("Quản lý sản phẩm", "manage-product"),
 
   ]),
@@ -23,9 +23,9 @@ const items = [
     getItem("Thống kê sản phẩm", "statistics-product"),
   ]),
   getItem("Thống kê  ", "sub3", <UnorderedListOutlined />, [
-    getItem("Cơ xản suất", "report-factories"),
-    getItem("Đại lý ", "report-distributors"),
-    getItem("Bảo hành", "report-warranty-centers"),
+    getItem("Cơ xản suất", "factories"),
+    getItem("Đại lý ", "distributors"),
+    getItem("Bảo hành", "warranty-centers"),
   ])
 ];
 const SideBar = ({setCurrentRoute}) => {
