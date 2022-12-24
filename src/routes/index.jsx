@@ -12,17 +12,16 @@ import StatisticProduct from "../pages/admin/components/static-product";
 import Information from "../pages/admin/components/information";
 import Distributor from "../pages/distributor";
 import ManageProduct from "../pages/admin/components/management/manageProduct";
-import ManageAccount from "../pages/admin/components/management/manageAccount";import ComfirmProduct from "../pages/warrantyCenter/components/comfirmProduct";
+import ManageAccount from "../pages/admin/components/management/manageAccount";
+import ComfirmProduct from "../pages/warrantyCenter/components/comfirmProduct";
 import CreateRequire from "../pages/warrantyCenter/components/createRequire";
 import Manufacture from "../pages/factory/components/manufacture";
-import InputProduct from "../pages/factory/components/inputProduct";
 import Store from "../pages/factory/components/store";
 import StaticSales from "../pages/factory/components/static/staticSales";
 import StaticError from "../pages/factory/components/static/staticError";
-import OutputProduct from "../pages/factory/components/outputProduct";
-import MakeRequire from "../pages/factory/components/makeRequire";
-
 import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
+import ListRequirement from "../pages/factory/components/listRequirement";
+import InputStore from "../pages/factory/components/importStore";
 
 const Router = ({notify}) => {
   return (
@@ -41,9 +40,8 @@ const Router = ({notify}) => {
       </Route>
       <Route path="/factory" element={<Factory />}>
           <Route path="manufacture" element={<Manufacture/>}/>
-          <Route path="input-product" element={<InputProduct/>}/>
-          <Route path="output-product" element={<OutputProduct/>}/>
-          <Route path="make-require" element={<MakeRequire/>}/>
+          <Route path="input-store" element={<InputStore/>}/>
+          <Route path="list-require" element={<ListRequirement/>}/>
           <Route path="factories-store" element={<Store/>}/>
           <Route path="static-sales" element={<StaticSales/>}/>
           <Route path="static-error" element={<StaticError/>}/>

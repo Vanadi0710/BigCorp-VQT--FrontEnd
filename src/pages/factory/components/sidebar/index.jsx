@@ -15,12 +15,12 @@ function getItem(label, key, icon, children, type) {
 const items = [
     getItem("Hoạt động ", "sub1", <UnorderedListOutlined />, [
         getItem("Sản xuất hàng ", "manufacture"),
+        getItem("Nhập vào kho ", "input-store"),
+
 
     ]),
     getItem("Yêu cầu", "sub2", <UnorderedListOutlined />, [
-        getItem("Nhập hàng", "input-product"),
-        getItem("Xuất hàng  ", "output-product"),
-        getItem("Xử lý yêu cầu  ", "make-require"),
+        getItem("Xử lý yêu cầu ", "list-require"),
 
     ]),
 
