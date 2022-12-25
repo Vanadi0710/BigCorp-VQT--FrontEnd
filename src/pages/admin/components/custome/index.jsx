@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import {Button, Form, Input, Modal, Popconfirm, Table} from 'antd';
+import {Button, Form, Input, Modal, Popconfirm, Select, Table} from 'antd';
 import {InfoCircleOutlined} from "@ant-design/icons";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -91,6 +91,17 @@ const Customer = () => {
         setIsModalOpen(false);
     };
     // end model
+    //select list đại lý
+    const [isModalOpenFactory, setIsModalOpenFactory] = useState(false);
+    const showModalFactory = () => {
+        setIsModalOpenFactory(true);
+    };
+    const handleOkFactory = () => {
+        setIsModalOpenFactory(false);
+    };
+    const handleCancelFactory = () => {
+        setIsModalOpenFactory(false);
+    };
     const [dataSource, setDataSource] = useState([
         {
             key: '0',
@@ -123,28 +134,19 @@ const Customer = () => {
             title: 'Tên khách hành',
             dataIndex: 'name',
             width: '30%',
-            editable: true,
+            editable: false,
         },
         {
             title: 'số điện thoại',
             dataIndex: 'phoneNumber',
-            editable: true,
+            editable: false,
         },
         {
             title: 'Địa chỉ',
             dataIndex: 'address',
-            editable: true,
+            editable: false,
         },
-        {
-            title: 'Xoá',
-            dataIndex: 'operation',
-            render: (_, record) =>
-                dataSource.length >= 1 ? (
-                    <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-                        <a className="btn btn-danger">Delete</a>
-                    </Popconfirm>
-                ) : null,
-        },
+
         {
             title: 'Chi tiết đơn mua',
             dataIndex: 'action',
@@ -200,8 +202,28 @@ const Customer = () => {
             dataIndex: 'name',
         },
         {
+            title: 'Model  ',
+            dataIndex: 'model',
+
+        },
+
+        {
             title: 'Ngày mua',
             dataIndex: 'date',
+        },
+        {
+            title: 'Hạn bảo hành',
+            dataIndex: 'toDate',
+        },
+        {
+            title: 'State',
+            dataIndex: 'state',
+
+        },
+        {
+            title: 'Action ',
+            dataIndex: 'action',
+            render: () => <Button type="primary" onClick={showModalFactory}>Bảo hành</Button>
         },
 
     ];
@@ -209,22 +231,34 @@ const Customer = () => {
         {
             key: '1',
             name: 'Macbook',
-           date: '01/01/1985',
+            model: 'MB02',
+            state:'Đang bảo hành',
+            date: '01/01/1985',
+            toDate: '01/01/1986'
         },
         {
             key: '2',
             name: 'Macbook',
+            model: 'MB02',
+            state:'Đang bảo hành',
             date: '01/01/1985',
+            toDate: '01/01/1986'
         },
         {
             key: '3',
             name: 'Macbook',
+            model: 'MB02',
+            state:'Đang bảo hành',
             date: '01/01/1985',
+            toDate: '01/01/1986'
         },
         {
             key: '4',
             name: 'Macbook',
+            model: 'MB02',
+            state:'Đang bảo hành',
             date: '01/01/1985',
+            toDate: '01/01/1986'
         }
     ]
     return (
@@ -253,8 +287,47 @@ const Customer = () => {
                 pageSize={6}
 
             />
-            <Modal title="Thông tin sản phẩm đã mua " open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+            <Modal width={1000} title="Thông tin sản phẩm đã mua " open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <Table dataSource={dataModels} columns={columnsModels}/>
+            </Modal>
+            <Modal title="Chọn đại lý bảo hành" open={isModalOpenFactory} onOk={handleOkFactory} onCancel={handleCancelFactory}>
+                <Select className="py-3"
+                    showSearch
+                    style={{
+                        width: 200,
+                    }}
+                    placeholder="Search to Select"
+                    optionFilterProp="children"
+                    filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                    filterSort={(optionA, optionB) =>
+                        (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                    }
+                    options={[
+                        {
+                            value: '1',
+                            label: 'Đại lý A',
+                        },
+                        {
+                            value: '2',
+                            label: 'Đại lý B',
+                        },
+                        {
+                            value: '3',
+                            label: 'Đại lý C',
+                        },
+                        {
+                            value: '4',
+                            label: 'Đại lý D',
+                        },
+                        {
+                            value: '5',
+                            label: 'Đại lý E',
+                        },
+                        {
+                            value: '6',
+                            label: 'Đại lý F',
+                        },
+                    ]}/>
             </Modal>
         </div>
     );

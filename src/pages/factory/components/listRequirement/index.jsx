@@ -4,37 +4,25 @@ import {PlusOutlined} from "@ant-design/icons";
 import React, { useState } from 'react';
 import { Table } from 'antd';
 const columns = [
+    // mã đơn , tên cơ sở yêu cầu , trạng thái , chi tiết , action
     {
-        title: 'Tên yêu cầu',
-        dataIndex: 'name',
-        key: 'name',
+        title: 'Mã đơn',
+        dataIndex: 'code',
+        key: 'code',
 
     },
     {
-        title: 'Mặt hàng',
-        dataIndex: 'product',
-        key: 'product'
+        title: 'Tên cơ sở ',
+        dataIndex: 'codeName',
+        key: 'codeName'
     },
 
     {
-        title: 'Loại yêu cầu',
-        dataIndex: 'class',
-        key: 'class',
-        // render: (text) => {
-        //     if (text === 'Nhập hàng') {
-        //         <a>{text}</a>
-        //     }
-        //     else  {
-        //         <a style="color: red">{text}</a>
-        //     }
-        // }
-
-    },
-    {
-        title: ' Trạng thái',
+        title: 'Trạng thái  ',
         dataIndex: 'status',
         key: 'status',
     },
+
     {
         title: ' Thông tin  ',
         dataIndex: 'action',
@@ -47,41 +35,36 @@ const columns = [
 const data = [
     {
         key: '1',
-        name: 'Nhập hàng',
-        product: 'Macbook',
-        class: 'Nhập hàng',
+        code: 'ST1010',
+        codeName: 'E20',
         status: 'Chưa xác nhận',
 
     },
     {
         key: '2',
-        name: 'Nhập hàng',
-        product: 'Macbook',
-        class: 'Nhập hàng',
+        code: 'ST1010',
+        codeName: 'E20',
         status: 'Chưa xác nhận',
 
     },
     {
         key: '3',
-        name: 'xuất hàng',
-        product: 'Macbook',
-        class: 'Nhập hàng',
+        code: 'ST1010',
+        codeName: 'E20',
         status: 'Chưa xác nhận',
 
     },
     {
         key: '4',
-        name: 'Xuất hàng',
-        product: 'Macbook',
-        class: 'Nhập hàng',
+        code: 'ST1010',
+        codeName: 'E20',
         status: 'Chưa xác nhận',
 
     },
     {
         key: '5',
-        name: 'Nhập hàng',
-        product: 'Macbook',
-        class: 'Nhập hàng',
+        code: 'ST1010',
+        codeName: 'E20',
         status: 'Chưa xác nhận',
 
     }
