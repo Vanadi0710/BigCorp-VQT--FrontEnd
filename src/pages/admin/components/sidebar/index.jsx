@@ -16,6 +16,7 @@ const items = [
   getItem("Quản lý", "sub1", <UnorderedListOutlined />, [
     getItem("Quản lý tài khoản", "accounts"),
     getItem("Quản lý sản phẩm", "manage-product"),
+    getItem("Quản lý khách hàng", "customer"),
 
   ]),
   getItem("Tổng hợp ", "sub2", <UnorderedListOutlined />, [

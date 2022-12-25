@@ -22,6 +22,7 @@ import StaticError from "../pages/factory/components/static/staticError";
 import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
 import ListRequirement from "../pages/factory/components/listRequirement";
 import InputStore from "../pages/factory/components/importStore";
+import Custome from "../pages/admin/components/custome";
 
 const Router = ({notify}) => {
   return (
@@ -31,6 +32,7 @@ const Router = ({notify}) => {
             <Route path=":branchId" element={<DistributorChart />}/>
           </Route>
           <Route path="factories" element={<FactoriesAdmin />} />
+          <Route path="customer" element={<Custome/>}/>
           <Route path="warranty-centers" element={<WarrantyCenterAdmin />} />
           <Route path="manage-product" element={<ManageProduct/>}/>
           <Route path="accounts" element={<ManageAccount />} />
