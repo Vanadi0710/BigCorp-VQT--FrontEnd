@@ -7,7 +7,8 @@ const initialState = {
   account: {
     _id: null,
     username: null,
-    role: null
+    role: null,
+    branch: null
   },
   loading: "idle",
   isLoggedIn: false,
@@ -39,7 +40,6 @@ const authSlice = createSlice({
       .addCase(onSignIn.rejected, (state, action) => {
         state.isLoggedIn = false;
         state.loading = "idle";
-        // window.location.href = "/auth/sign-in";
       })
 
       // LOG OUT
@@ -51,6 +51,7 @@ const authSlice = createSlice({
         state.isLoggedIn = false;
         state.loading = "idle";
         localStorage.clear()
+        window.location.href = "/sign-in";
       })
       .addCase(onLogOut.rejected, (state, action) => {
         state.loading = "idle";

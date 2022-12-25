@@ -6,8 +6,9 @@ const signIn = async (credentials) => {
 }
 
 const logOut = async () => {
-    let response = await AxiosAuth.post('/auth/log-out')
-    return response
+    await AxiosAuth.post('/auth/log-out')
+    localStorage.clear()
+    return 'Log out successfully'
 }
 
 const changePassword = async (password, newPassword) => {

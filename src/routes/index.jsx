@@ -47,8 +47,6 @@ const Router = ({notify}) => {
           <Route path="factories-store" element={<Store/>}/>
           <Route path="static-sales" element={<StaticSales/>}/>
           <Route path="static-error" element={<StaticError/>}/>
-
-
       </Route>
       <Route path="/distributor" element={<Distributor />}>
 

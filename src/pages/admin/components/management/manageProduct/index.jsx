@@ -1,8 +1,8 @@
-import { Form, Table } from "antd";
+import { Table } from "antd";
 import React, { useState, useEffect } from "react";
 import productAPI from "../../../../../api/product.api";
 import { PAGE_SIZE } from "../../../../../constants";
-import { useNavigate } from "react-router-dom";
+import ProductDetailsModal from "../../../../../components/productDetails";
 
 const ManageProduct = () => {
   const columns = [
@@ -26,7 +26,7 @@ const ManageProduct = () => {
       key: "action",
       render: (product) => (
         <button
-          onClick={() => redirectToProductDetails(product)}
+          onClick={() => openProductDetailsModal(product)}
           className="btn btn-primary"
         >
           chi tiết
@@ -36,10 +36,13 @@ const ManageProduct = () => {
   ];
 
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
+  const [productIsPicked, setProductIsPicked] = useState({})
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false)
 
-  const redirectToProductDetails = (product) => {
-    navigate(`/products/${product._id}`);
+  const openProductDetailsModal = async (product) => {
+    setIsProductModalOpen(true)
+    
+    setProductIsPicked(product)
   };
 
   const getProducts = async () => {
@@ -60,7 +63,7 @@ const ManageProduct = () => {
   }, []);
 
   return (
-    <Form component={false}>
+    <div>
       <div>
         <h3 className="py-3">Quản lý sản phẩm</h3>
         <hr />
@@ -73,7 +76,8 @@ const ManageProduct = () => {
           pageSize: PAGE_SIZE,
         }}
       />
-    </Form>
+      {isProductModalOpen && <ProductDetailsModal setIsProductModalOpen={setIsProductModalOpen} product={productIsPicked}/>}
+    </div>
   );
 };
 export default ManageProduct;

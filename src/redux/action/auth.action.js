@@ -11,8 +11,9 @@ export const onSignIn = createAsyncThunk(
         _id: data._id,
         username: data.username,
         role: data.role,
+        branch: data.branch,
         accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
+        refreshToken: data.refreshToken
       };
       return account;
     } catch (err) {

@@ -1,4 +1,4 @@
-import {Axios, AxiosAuth} from '../services/AxiosService'
+import {AxiosAuth} from '../services/AxiosService'
 
 const getProducts = async () => {
     return (await AxiosAuth.get('/product-lines/products')).data

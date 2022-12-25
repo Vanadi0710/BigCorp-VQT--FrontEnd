@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import accountAPI from "../../../../../api/account.api";
 import { PAGE_SIZE } from "../../../../../constants";
+import { convertRoleType } from "../../../../../utils/convertType";
 
 const ManageAccount = () => {
   const columns = [
@@ -35,6 +36,7 @@ const ManageAccount = () => {
     accounts = accounts.map((account, index) => {
       return {
         ...account,
+        role: convertRoleType(account.role),
         branch: account?.branch?.branchName,
         key: index,
         id: index + 1,

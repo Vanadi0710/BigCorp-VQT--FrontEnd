@@ -8,9 +8,13 @@ const addBranch = async (branch) => {
     return await AxiosAuth.post('/branches', branch)
 }
 
+const getBranch = async (branchId) => {
+    return (await AxiosAuth.get(`/branches/${branchId}`)).data
+}
 const branchAPI = {
     getBranches,
-    addBranch
+    addBranch,
+    getBranch
 }
 
 export default branchAPI

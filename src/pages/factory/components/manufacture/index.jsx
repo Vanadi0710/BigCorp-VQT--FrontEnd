@@ -9,7 +9,7 @@ import {
     InputNumber,
     TreeSelect,
 } from 'antd';
-import ModelInformation from "../../../../components/model/model";
+import ModelInformation from "../../../../components/productDetails";
 
 
 
