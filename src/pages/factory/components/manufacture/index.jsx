@@ -128,7 +128,7 @@ const Manufacture = ({notify}) => {
           layout="horizontal"
         >
           <div className="py-3">
-            <h3>Sản xuất {productIsPicked.productName}</h3>
+            <h3>Sản xuất {productIsPicked?.productName}</h3>
           </div>
           <Form.Item label="Nhập số lượng">
             <InputNumber onChange={(value) => {setQuantity(value)}}/>

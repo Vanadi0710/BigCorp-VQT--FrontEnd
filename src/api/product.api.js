@@ -4,8 +4,13 @@ const getProducts = async () => {
     return (await AxiosAuth.get('/product-lines/products')).data
 }
 
+const getProductInstances = async () => {
+    
+}
+
 const productAPI = {
-   getProducts: getProducts,
+   getProducts,
+   getProductInstances
 }
 
 export default productAPI

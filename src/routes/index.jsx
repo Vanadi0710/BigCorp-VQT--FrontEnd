@@ -55,7 +55,7 @@ const Router = ({ notify }) => {
       </Route>
       <Route path="/factory" element={<Factory />}>
         <Route path="manufacture" element={<Manufacture notify={notify}/>} />
-        <Route path="input-store" element={<InputStore />} />
+        <Route path="input-store" element={<InputStore notify={notify}/>} />
         <Route path="list-require" element={<ListRequirement />} />
         <Route path="factories-store" element={<Store />} />
         <Route path="static-sales" element={<StaticSales />} />
