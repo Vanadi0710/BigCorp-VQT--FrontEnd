@@ -133,7 +133,7 @@ const ManageAccount = () => {
           >
             <Select
                 showSearch
-                placeholder="chọn cơ sở quản l"
+                placeholder="chọn cơ sở quản lý"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                     (option?.label ?? '').toLowerCase().includes(input.toLowerCase())

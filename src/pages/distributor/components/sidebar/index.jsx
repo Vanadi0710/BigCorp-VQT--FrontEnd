@@ -21,6 +21,7 @@ const items = [
     getItem("Yêu cầu", "sub2", <UnorderedListOutlined />, [
         getItem("Xử lý yêu cầu ", "handle"),
         getItem("Tạo yêu cầu ", "create-require"),
+        getItem("Lịch sử yêu cầu ", "history-require"),
 
     ]),
     getItem("Tổng hợp ", "sub3", <UnorderedListOutlined />, [

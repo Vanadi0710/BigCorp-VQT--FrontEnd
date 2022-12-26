@@ -1,9 +1,8 @@
-import {Button, Modal, Table} from "antd";
 import React, {useState} from "react";
-import Search from "antd/es/input/Search";
-const HistoryBuild = () => {
-    const onSearch = (value) => console.log(value);
-//model open info đơn hàng
+import {Button, Modal, Table} from "antd";
+
+const HistoryRequirement = () => {
+    //model open info đơn hàng
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
         setIsModalOpen(true);
@@ -18,41 +17,41 @@ const HistoryBuild = () => {
         {
             key: '1',
             code: 'ST1000',
-            customeId: 'CUSTOME1',
+            nameProduct: 'E20',
             date: '19/10/2001',
-            note: 'đã xác nhận',
-            total: '150.000 VND',
+            class: 'Bảo hành',
+            note: 'đã xác nhận'
 
         },
         {
             key: '2',
             code: 'ST1000',
-            customeId: 'CUSTOME1',
+            nameProduct: 'E20',
             date: '19/10/2001',
-            note: 'đã xác nhận',
-            total: '150.000 VND',
+            class: 'Thu hồi',
+            note: 'đã xác nhận'
         },
         {
             key: '3',
             code: 'ST1000',
-            customeId: 'CUSTOME1',
+            nameProduct: 'E20',
+            class: 'Bảo hành',
             date: '19/10/2001',
-            note: 'đã xác nhận',
-            total: '150.000 VND',
+            note: 'đã xác nhận'
         }
 
     ];
 
     const columns = [
         {
-            title: 'Mã đơn hàng ',
+            title: 'Mã yêu cầu',
             dataIndex: 'code',
             key: 'code',
         },
         {
-            title: 'Mã khách hàng',
-            dataIndex: 'customeId',
-            key: 'customeId',
+            title: 'cơ sở yêu cầu',
+            dataIndex: 'nameProduct',
+            key: 'nameProduct',
         },
         {
             title: 'chi tiết đơn',
@@ -61,15 +60,15 @@ const HistoryBuild = () => {
             render: () => <Button onClick={showModal}>Chi tiết</Button>
         },
         {
-            title: 'Ngày mua ',
+            title: 'Ngày xác nhận ',
             dataIndex: 'date',
             key: 'date',
 
         },
         {
-            title: 'Tổng tiền ',
-            dataIndex: 'total',
-            key: 'total',
+            title: 'Loại yêu cầu',
+            dataIndex: 'class',
+            key: 'class',
 
         },
         {
@@ -112,19 +111,17 @@ const HistoryBuild = () => {
     return (
         <div>
             <div className="py-4">
-                <h3>Lịch sử thanh toán</h3>
+                <h3>Lịch sử yêu cầu</h3>
                 <hr/>
             </div>
             <div>
-                <div className="col-3 ">
-                    <Search placeholder="Nhập mã đơn hoạc mã khách hàng" onSearch={onSearch} enterButton />
-                </div>
-                <Table className="py-3" dataSource={dataSource} columns={columns} />
+                <Table dataSource={dataSource} columns={columns} />
                 <Modal title="Chi tiết đơn hàng" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                     <Table  columns={columnsModels} dataSource={dataModels} pagination={false}/>
                 </Modal>
             </div>
         </div>
     );
+
 }
-export default HistoryBuild
+export default HistoryRequirement

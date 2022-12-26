@@ -30,6 +30,8 @@ import HistoryBuild from "../pages/distributor/components/historyBuild";
 import Requirement from "../pages/distributor/components/requirement";
 import Analysis from "../pages/distributor/components/analysis";
 import { useSelector } from "react-redux";
+import HistoryRequirement from "../pages/distributor/components/historyRequirement";
+import CreateRequirement from "../pages/distributor/components/createRequirement";
 
 const Router = ({ notify }) => {
   const auth = useSelector(state => state.auth)
@@ -65,11 +67,11 @@ const Router = ({ notify }) => {
           <Route path="cashier" element={<Cashier />}/>
           <Route path="history-cashier" element={<HistoryBuild/>}/>
           <Route path="handle" element={<Requirement/>}/>
-          <Route path="create-require" element={<CreateRequire/>}/>
+          <Route path="create-require" element={<CreateRequirement/>}/>
           <Route path="store" element={<Store/>}/>
           <Route path="statistics-require" element={<StaticSalesDistributor/>}/>
           <Route path="analysis-product" element={<Analysis/>}/>
-
+          <Route path="history-require" element={<HistoryRequirement/>}/>
 
       </Route>
       <Route path="/warranty-center" element={<WarrantyCenter />}>
