@@ -17,42 +17,42 @@ const ProductDetailsModal = ({ setIsProductModalOpen, product }) => {
     {
       key: "1",
       property: "cpu",
-      description: product.cpu,
+      description: product?.cpu,
     },
     {
       key: "2",
       property: "RAM",
-      description: product.ram,
+      description: product?.ram,
     },
     {
       key: "3",
       property: "Ổ cứng",
-      description: product.hardDrive,
+      description: product?.hardDrive,
     },
     {
       key: "4",
       property: "Màn hình",
-      description: product.monitor,
+      description: product?.monitor,
     },
     {
       key: "5",
       property: "Trọng lượng",
-      description: product.weight,
+      description: product?.weight,
     },
     {
       key: "6",
       property: "Giá",
-      description: product.price,
+      description: product?.price,
     },
     {
       key: "7",
       property: "Đồ họa",
-      description: product.graphic,
+      description: product?.graphic,
     },
     {
       key: "8",
       property: "Hệ điều hành",
-      description: product.os,
+      description: product?.os,
     },
   ];
 
@@ -67,7 +67,7 @@ const ProductDetailsModal = ({ setIsProductModalOpen, product }) => {
 
   return (
     <Modal
-      title={product.productName}
+      title={product?.productName}
       open={true}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -81,9 +81,9 @@ const ProductDetailsModal = ({ setIsProductModalOpen, product }) => {
               visible: false,
             }}
             width={150}
-            src={BACKEND_BASE_URL + '/' + product.images[0]}
+            src={BACKEND_BASE_URL + '/' + product?.images[0]}
             onClick={() => setVisible(true)}
-            alt={product.productName}
+            alt={product?.productName}
           />
           <div
             style={{
@@ -96,7 +96,7 @@ const ProductDetailsModal = ({ setIsProductModalOpen, product }) => {
                 onVisibleChange: (vis) => setVisible(vis),
               }}
             >
-                {product.images.map((image, index) => {
+                {product?.images.map((image, index) => {
                     return (
                         <Image key={index} src={BACKEND_BASE_URL + '/' + image} alt={product.productName}/>
                     )

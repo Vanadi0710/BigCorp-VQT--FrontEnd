@@ -41,7 +41,6 @@ const ManageProduct = () => {
 
   const openProductDetailsModal = async (product) => {
     setIsProductModalOpen(true)
-    
     setProductIsPicked(product)
   };
 

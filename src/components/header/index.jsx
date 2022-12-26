@@ -11,7 +11,6 @@ const Header = () => {
   const { account } = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [branch, setBranch] = useState({});
-  console.log(branch);
   const dispatch = useDispatch();
 
   const showModal = async () => {

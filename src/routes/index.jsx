@@ -1,5 +1,5 @@
 import LogIn from "../pages/login";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import PageNotFound from "../pages/not-found";
 import Admin from "../pages/admin";
 import Factory from "../pages/factory";
@@ -23,36 +23,41 @@ import StaticError from "../pages/factory/components/static/staticError";
 import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
 import ListRequirement from "../pages/factory/components/listRequirement";
 import InputStore from "../pages/factory/components/importStore";
-import Custome from "../pages/admin/components/custome";
+import Customer from "../pages/admin/components/customer";
 import History from "../pages/factory/components/history";
 import Cashier from "../pages/distributor/components/cashier";
 import HistoryBuild from "../pages/distributor/components/historyBuild";
 import Requirement from "../pages/distributor/components/requirement";
-import Analyse from "../pages/distributor/components/analyse";
+import Analysis from "../pages/distributor/components/analysis";
+import { useSelector } from "react-redux";
 
-const Router = ({notify}) => {
+const Router = ({ notify }) => {
+  const auth = useSelector(state => state.auth)
+  const currentRoute = useLocation().pathname
+
+  if(currentRoute === '/') window.location.href = '/sign-in'
   return (
     <Routes>
       <Route path="admin" element={<Admin />}>
-          <Route path="distributors" element={<DistributorsAdmin />} >
-            <Route path=":branchId" element={<DistributorChart />}/>
-          </Route>
-          <Route path="factories" element={<FactoriesAdmin />} />
-          <Route path="customer" element={<Custome/>}/>
-          <Route path="warranty-centers" element={<WarrantyCenterAdmin />} />
-          <Route path="manage-product" element={<ManageProduct/>}/>
-          <Route path="accounts" element={<ManageAccount />} />
-          <Route path="checking-product" element={<CheckingProduct/>}/>
-          <Route path="statistics-product" element={<StatisticProduct/>}/>
-          <Route path="information" element={<Information/>}/>
+        <Route path="distributors" element={<DistributorsAdmin />}>
+          <Route path=":branchId" element={<DistributorChart />} />
+        </Route>
+        <Route path="factories" element={<FactoriesAdmin />} />
+        <Route path="customer" element={<Customer />} />
+        <Route path="warranty-centers" element={<WarrantyCenterAdmin />} />
+        <Route path="manage-product" element={<ManageProduct />} />
+        <Route path="accounts" element={<ManageAccount />} />
+        <Route path="checking-product" element={<CheckingProduct />} />
+        <Route path="statistics-product" element={<StatisticProduct />} />
+        <Route path="information" element={<Information />} />
       </Route>
       <Route path="/factory" element={<Factory />}>
-          <Route path="manufacture" element={<Manufacture/>}/>
-          <Route path="input-store" element={<InputStore/>}/>
-          <Route path="list-require" element={<ListRequirement/>}/>
-          <Route path="factories-store" element={<Store/>}/>
-          <Route path="static-sales" element={<StaticSales/>}/>
-          <Route path="static-error" element={<StaticError/>}/>
+        <Route path="manufacture" element={<Manufacture notify={notify}/>} />
+        <Route path="input-store" element={<InputStore />} />
+        <Route path="list-require" element={<ListRequirement />} />
+        <Route path="factories-store" element={<Store />} />
+        <Route path="static-sales" element={<StaticSales />} />
+        <Route path="static-error" element={<StaticError />} />
           <Route path="history" element={<History/>}/>
 
       </Route>
@@ -63,16 +68,16 @@ const Router = ({notify}) => {
           <Route path="create-require" element={<CreateRequire/>}/>
           <Route path="store" element={<Store/>}/>
           <Route path="statistics-require" element={<StaticSalesDistributor/>}/>
-          <Route path="analyse-product" element={<Analyse/>}/>
+          <Route path="analysis-product" element={<Analysis/>}/>
 
 
       </Route>
       <Route path="/warranty-center" element={<WarrantyCenter />}>
-          <Route path="comfirm-product" element={<ComfirmProduct/>}/>
-          <Route path="create-require" element={<CreateRequire />}/>
-          <Route path="store" element={<Store/>}/>
+        <Route path="confirm-product" element={<ComfirmProduct />} />
+        <Route path="create-require" element={<CreateRequire />} />
+        <Route path="store" element={<Store />} />
       </Route>
-      <Route path="/sign-in" element={<LogIn notify={notify}/>} />
+      <Route path="/sign-in" element={<LogIn notify={notify} />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

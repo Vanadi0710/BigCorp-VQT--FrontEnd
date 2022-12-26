@@ -1,14 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 import { onSignIn, onLogOut } from "../action/auth.action";
-
 
 const initialState = {
   account: {
     _id: null,
     username: null,
     role: null,
-    branch: null
+    branch: null,
   },
   loading: "idle",
   isLoggedIn: false,
@@ -33,9 +31,13 @@ const authSlice = createSlice({
         state.loading = "idle";
         state.isLoggedIn = true;
         state.account = action.payload;
-        localStorage.setItem('accessToken', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken)
-        // window.location.href = "/";
+        localStorage.setItem("accessToken", action.payload.accessToken);
+        localStorage.setItem("refreshToken", action.payload.refreshToken);
+        const role = action.payload.role;
+        if (role === "ADMIN") window.location.href = "/admin";
+        else if (role === "PRODUCER") window.location.href = "/factory";
+        else if (role === "DISTRIBUTOR") window.location.href = "/distributor";
+        else if (role === "WARRANTY") window.location.href = "/warranty-center";
       })
       .addCase(onSignIn.rejected, (state, action) => {
         state.isLoggedIn = false;
@@ -50,7 +52,7 @@ const authSlice = createSlice({
         state.account = initialState.account;
         state.isLoggedIn = false;
         state.loading = "idle";
-        localStorage.clear()
+        localStorage.clear();
         window.location.href = "/sign-in";
       })
       .addCase(onLogOut.rejected, (state, action) => {
