@@ -1,7 +1,9 @@
 import {AxiosAuth} from '../services/AxiosService'
 
-const getBranches = async ({branchType}) => {
-    return (await AxiosAuth.get(`/branches?branchType=${branchType}`)).data
+const getBranches = async (params) => {
+    return (await AxiosAuth.get(`/branches`, {
+        params: params
+    })).data
 }
 
 const addBranch = async (branch) => {

@@ -29,8 +29,7 @@ const items = [
 
   getItem("Thống kê  ", "sub3", <UnorderedListOutlined />, [
     getItem("Kho", "factories-store"),
-    getItem("Thống kê sản lượng", "static-sales"),
-    getItem("Thống kê sản phẩm lỗi", "static-error"),
+    getItem("Thống kê", "statistic"),
   ]),
 ];
 const SideBar = ({ setCurrentRoute }) => {

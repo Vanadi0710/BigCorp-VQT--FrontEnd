@@ -1,16 +1,15 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import StatsChart from "../../../../../components/chart";
 import { chartColumnColor } from "../../../../../constants";
-import { Form, Table, Tag, Select } from "antd";
+import { Select } from "antd";
 import {
   STATS_MONTHLY,
   STATS_YEARLY,
   STATS_QUARTERLY,
 } from "../../../../../constants/index";
 
-const DistributorChart = () => {
+const WarrantyCenterChart = () => {
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState(STATS_MONTHLY);
   const [filter, setFilter] = useState();
@@ -81,4 +80,4 @@ const DistributorChart = () => {
   );
 };
 
-export default DistributorChart;
+export default WarrantyCenterChart;

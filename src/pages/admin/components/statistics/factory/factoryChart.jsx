@@ -10,7 +10,7 @@ import {
   STATS_QUARTERLY,
 } from "../../../../../constants/index";
 
-const DistributorChart = () => {
+const FactoryChart = () => {
   const [data, setData] = useState([]);
   const [labels, setLabels] = useState(STATS_MONTHLY);
   const [filter, setFilter] = useState();
@@ -81,4 +81,4 @@ const DistributorChart = () => {
   );
 };
 
-export default DistributorChart;
+export default FactoryChart;

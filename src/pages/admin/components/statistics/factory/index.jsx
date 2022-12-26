@@ -1,157 +1,135 @@
-import React, { useState } from 'react';
-import {Form, Input, InputNumber, Popconfirm, Table, Tag, Select} from 'antd';
-import {PlusOutlined} from "@ant-design/icons";
+import React, { useState, useEffect } from "react";
+import { Form, Table, Tag, Select } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
-const columns = [
-    {
-        title: 'Mã cơ sở',
-        dataIndex: 'code',
-        key: 'code',
-    },
-    {
-        title: 'Tên cơ sở',
-        dataIndex: 'name',
-        key: 'name',
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'Số điện thoại',
-        dataIndex: 'number',
-        key: 'number',
-    },
-    {
-        title: 'Địa chỉ',
-        dataIndex: 'address',
-        key: 'address',
-    },
-    {
-        title: 'Trạng thái',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: 'Xửa',
-        dataIndex: 'update',
-        key: 'update',
-        render: (text) => <a className="btn btn-warning">{text}</a>,
-    },
-    {
-        title: 'Xoá',
-        dataIndex: 'delete',
-        key: 'delete',
-        render: (text) => <a className="btn btn-danger">{text}</a>,
-    },
-];
-const data = [
-    {
-        key: '1',
-        code: 'B1',
-        name: 'Cơ sở 1',
-        number: '0338691729',
-        address: 'Tây Hồ - Hà Nội',
-        tags: ['Đang mở cửa'],
-        update: 'Xửa',
-        delete: 'Xoá'
-    },
-    {
-        key: '2',
-        code: 'B2',
-        name: 'Cơ sở 1',
-        number: '0338691729',
-        address: 'Tây Hồ - Hà Nội',
-        tags: ['Đang mở cửa'],
-        update: 'Xửa',
-        delete: 'Xoá'
-    },
-    {
-        key: '3',
-        code: 'B3',
-        name: 'Cơ sở 1',
-        number: '0338691729',
-        address: 'Tây Hồ - Hà Nội',
-        tags: ['Đang mở cửa'],
-        update: 'Xửa',
-        delete: 'Xoá'
-    },
-];
-const FactoriesAdmin = () => {
+import { Link, Outlet, useParams } from "react-router-dom";
+import branchAPI from "../../../../../api/branch.api";
 
-    const onSearch = (value) => console.log(value);
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    }
+const DistributorsAdmin = () => {
+  const columns = [
+    {
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Giám đốc",
+      dataIndex: "owner",
+      key: "owner",
+    },
+    {
+      title: "Mã cơ sở",
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: "Tên cơ sở",
+      dataIndex: "branchName",
+      key: "name",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Quy mô",
+      dataIndex: "members",
+      key: "members",
+    },
+    {
+      title: "Thao tác",
+      key: "action",
+      render: (branch) => (
+        <Link to={`${branch?._id}`} className="btn btn-info">
+          Thống kê
+        </Link>
+      ),
+    },
+  ];
+  const [branches, setBranches] = useState([]);
+  const { branchId } = useParams();
 
-    return (
-        <Form  component={false}>
-            <div>
-                <h3 className='py-3'>
-                    Danh sách / cơ sở sản xuất
-                </h3>
-                <hr/>
-                <div className="row">
-                    <div className="col-2">
-                        <button className="btn btn-primary py-2"><PlusOutlined />Thêm cơ sở</button>
-                    </div>
-                    <div className="col-2">
-                        <Select
-                            size = "large"
-                            defaultValue="lucy"
-                            style={{
-                                width: 200,
-                            }}
-                            onChange={handleChange}
-                            options={[
-                                {
-                                    options: [
-                                        {
-                                            label: 'Tìm theo tên',
-                                            value: 'name',
-                                        },
-                                    ],
-                                },
-                                {
-                                    options: [
-                                        {
-                                            label: 'Tìm theo địa chỉ',
-                                            value: 'địa chỉ',
-                                        },
-                                    ],
-                                },
-                            ]}
-                        />
-                    </div>
-                    <div className="col-5">
-                        <Search
-                            placeholder="Nhập từ khoá tìm kiếm  ....."
-                            allowClear
-                            enterButton="Search"
-                            size="large"
-                            onSearch={onSearch}
-                        />
-                    </div>
+  const onSearch = (value) => console.log(value);
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+  };
 
-                </div>
+  const getBranches = async () => {
+    let branches = await branchAPI.getBranches({ branchType: "FACTORY" });
+    branches = branches.map((branch, index) => {
+      return {
+        ...branch,
+        id: index + 1,
+        owner: branch?.owner?.username,
+        key: index + 1,
+      };
+    });
+    setBranches(branches);
+  };
 
-                <hr/>
+  useEffect(() => {
+    getBranches();
+  }, []);
+
+  return (
+    <>
+      {!branchId && (
+        <>
+          <div>
+            <h3 className="py-3">Danh sách / đại lý phân phối</h3>
+            <hr />
+            <div className="row">
+              <div className="col-2">
+                <button className="btn btn-primary py-2">
+                  <PlusOutlined />
+                  Thêm cơ sở
+                </button>
+              </div>
+              <div className="col-2">
+                <Select
+                  size="large"
+                  defaultValue=""
+                  style={{
+                    width: 200,
+                  }}
+                  onChange={handleChange}
+                  options={[
+                    {
+                      label: "Tìm theo tên",
+                      value: "name",
+                    },
+                    {
+                      label: "Tìm theo địa chỉ",
+                      value: "địa chỉ",
+                    },
+                  ]}
+                />
+              </div>
+              <div className="col-5">
+                <Search
+                  placeholder="Nhập từ khoá tìm kiếm ....."
+                  allowClear
+                  enterButton="Search"
+                  size="large"
+                  onSearch={onSearch}
+                />
+              </div>
             </div>
-            <Table columns={columns} dataSource={data}
-            />
-        </Form>
-    );
+
+            <hr />
+          </div>
+          <Table columns={columns} dataSource={branches} pagination={false}/>
+        </>
+      )}
+      <Outlet />
+    </>
+  );
 };
-export default FactoriesAdmin;
+export default DistributorsAdmin;

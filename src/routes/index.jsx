@@ -17,9 +17,7 @@ import ComfirmProduct from "../pages/warrantyCenter/components/comfirmProduct";
 import CreateRequire from "../pages/warrantyCenter/components/createRequire";
 import Manufacture from "../pages/factory/components/manufacture";
 import Store from "../pages/factory/components/store";
-import StaticSales from "../pages/factory/components/static/staticSales";
 import StaticSalesDistributor from "../pages/distributor/components/static";
-import StaticError from "../pages/factory/components/static/staticError";
 import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
 import ListRequirement from "../pages/factory/components/listRequirement";
 import InputStore from "../pages/factory/components/importStore";
@@ -33,48 +31,55 @@ import FactoryStore from "../pages/factory/components/store";
 import { useSelector } from "react-redux";
 import HistoryRequirement from "../pages/distributor/components/historyRequirement";
 import CreateRequirement from "../pages/distributor/components/createRequirement";
+import FactoryStatistic from "../pages/factory/components/statistics";
+import FactoryChart from "../pages/admin/components/statistics/factory/factoryChart";
+import WarrantyCenterChart from "../pages/admin/components/statistics/warrantyCenter/warrantyCenterChart";
 
 const Router = ({ notify }) => {
-  const auth = useSelector(state => state.auth)
-  const currentRoute = useLocation().pathname
+  const auth = useSelector((state) => state.auth);
+  const currentRoute = useLocation().pathname;
 
-  if(currentRoute === '/') window.location.href = '/sign-in'
+  if (currentRoute === "/") window.location.href = "/sign-in";
   return (
     <Routes>
       <Route path="admin" element={<Admin />}>
         <Route path="distributors" element={<DistributorsAdmin />}>
           <Route path=":branchId" element={<DistributorChart />} />
         </Route>
-        <Route path="factories" element={<FactoriesAdmin />} />
+        <Route path="factories" element={<FactoriesAdmin />}>
+          <Route path=":branchId" element={<FactoryChart />} />
+        </Route>
         <Route path="customer" element={<Customer />} />
-        <Route path="warranty-centers" element={<WarrantyCenterAdmin />} />
+        <Route path="warranty-centers" element={<WarrantyCenterAdmin />}>
+          <Route path=":branchId" element={<WarrantyCenterChart />} />
+        </Route>
         <Route path="manage-product" element={<ManageProduct />} />
-        <Route path="accounts" element={<ManageAccount />} />
+        <Route path="accounts" element={<ManageAccount notify={notify}/>} />
         <Route path="checking-product" element={<CheckingProduct />} />
         <Route path="statistics-product" element={<StatisticProduct />} />
         <Route path="information" element={<Information />} />
       </Route>
+
       <Route path="/factory" element={<Factory />}>
-        <Route path="manufacture" element={<Manufacture notify={notify}/>} />
-        <Route path="input-store" element={<InputStore notify={notify}/>} />
+        <Route path="manufacture" element={<Manufacture notify={notify} />} />
+        <Route path="input-store" element={<InputStore notify={notify} />} />
         <Route path="list-require" element={<ListRequirement />} />
         <Route path="factories-store" element={<FactoryStore />} />
-        <Route path="static-sales" element={<StaticSales />} />
-        <Route path="static-error" element={<StaticError />} />
-          <Route path="history" element={<History/>}/>
-
+        <Route path="history" element={<History />} />
+        <Route path="statistic" element={<FactoryStatistic />} />
       </Route>
+
       <Route path="/distributor" element={<Distributor />}>
-          <Route path="cashier" element={<Cashier />}/>
-          <Route path="history-cashier" element={<HistoryBuild/>}/>
-          <Route path="handle" element={<Requirement/>}/>
-          <Route path="create-require" element={<CreateRequirement/>}/>
-          <Route path="store" element={<Store/>}/>
-          <Route path="statistics-require" element={<StaticSalesDistributor/>}/>
-          <Route path="analysis-product" element={<Analysis/>}/>
-          <Route path="history-require" element={<HistoryRequirement/>}/>
-
+        <Route path="cashier" element={<Cashier />} />
+        <Route path="history-cashier" element={<HistoryBuild />} />
+        <Route path="handle" element={<Requirement />} />
+        <Route path="create-require" element={<CreateRequirement />} />
+        <Route path="store" element={<Store />} />
+        <Route path="statistics-require" element={<StaticSalesDistributor />} />
+        <Route path="analysis-product" element={<Analysis />} />
+        <Route path="history-require" element={<HistoryRequirement />} />
       </Route>
+
       <Route path="/warranty-center" element={<WarrantyCenter />}>
         <Route path="confirm-product" element={<ComfirmProduct />} />
         <Route path="create-require" element={<CreateRequire />} />

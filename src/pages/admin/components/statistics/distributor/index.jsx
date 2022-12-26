@@ -67,7 +67,7 @@ const DistributorsAdmin = () => {
       return {
         ...branch,
         id: index + 1,
-        owner: branch.owner.username,
+        owner: branch?.owner?.username,
         key: index + 1,
       };
     });

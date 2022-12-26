@@ -1,15 +1,20 @@
-import {Button, Form, Input, Modal, Select, Space, Table} from "antd";
+import { Button, Form, Input, Modal, Select, Space, Table } from "antd";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import accountAPI from "../../../../../api/account.api";
 import { PAGE_SIZE } from "../../../../../constants";
 import { convertRoleType } from "../../../../../utils/convertType";
+import branchAPI from "../../../../../api/branch.api";
 
-const ManageAccount = () => {
+const ManageAccount = ({ notify }) => {
   //popup
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
+  const [branchesWithoutOwner, setBranchesWithoutOwner] = useState([]);
+  const [selectedBrachId, setSelectedBranchId] = useState();
+
+  const showModal = async () => {
     setIsModalOpen(true);
+    setBranchesWithoutOwner(await branchAPI.getBranches({ owner: "null" }));
   };
   const handleOk = () => {
     setIsModalOpen(false);
@@ -18,8 +23,33 @@ const ManageAccount = () => {
     setIsModalOpen(false);
   };
   //end popup
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+  const onFinish = async (values) => {
+    console.log(selectedBrachId);
+    if (!selectedBrachId) {
+      notify("Vui long chon chi nhanh quan ly", "WARNING");
+      return;
+    }
+    let branchType = selectedBrachId.split("-")[1];
+    let branchId = selectedBrachId.split("-")[0];
+    let role =
+      branchType === "FACTORY"
+        ? branchType
+        : branchType === "WARRANTY_CENTER"
+        ? branchType
+        : "DISTRIBUTOR";
+    try {
+      await accountAPI.addAccount({
+        ...values,
+        role,
+        branch: branchId
+      })
+      setIsModalOpen(false);
+      getAccounts()
+      notify('Them tai khoan thanh cong')
+    } catch (e) {
+      console.log(e);
+      notify(e.response?.data);
+    }
   };
   const columns = [
     {
@@ -69,109 +99,113 @@ const ManageAccount = () => {
         <h3 className="mt-3">Quản lý tài khoản </h3>
         <hr />
       </div>
-      <Button type="primary" onClick={showModal}>Thêm tài khoản</Button>
-      <Modal title=" Thêm tài khoản" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-
+      <Button type="primary" onClick={showModal}>
+        Thêm tài khoản
+      </Button>
+      <Modal
+        title=" Thêm tài khoản"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        cancelButtonProps={{ style: { display: "none" } }}
+        okButtonProps={{ style: { display: "none" } }}
+      >
         <Form
-            name="complex-form"
-            onFinish={onFinish}
-            labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 16,
-            }}
+          name="complex-form"
+          onFinish={onFinish}
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
         >
           <Form.Item label="Tên tài khoản">
             <Space>
               <Form.Item
-                  name="username"
-                  noStyle
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Tên không được bỏ trống',
-                    },
-                  ]}
+                name="username"
+                noStyle
+                rules={[
+                  {
+                    required: true,
+                    message: "Tên không được bỏ trống",
+                  },
+                ]}
               >
                 <Input
-                    style={{
-                      width: 160,
-                    }}
-                    placeholder="Nhập tên .... "
+                  style={{
+                    width: 160,
+                  }}
+                  placeholder="Nhập tên .... "
                 />
               </Form.Item>
             </Space>
           </Form.Item>
           <Form.Item label="Nhập mật khẩu">
-            <Input.Group compact>
-
+            <Space>
               <Form.Item
-                  name={['password', 'password']}
-                  noStyle
-                  rules={[
-                    {
-                      required: true,
-                      message: 'mật khẩu không được bỏ trống',
-                    },
-                  ]}
-              >
-                <Input
-                    style={{
-                      width: '50%',
-                    }}
-                    placeholder="password... "
-                />
-              </Form.Item>
-            </Input.Group>
-          </Form.Item>
-          <Form.Item
-              label="Quền tài khoản"
-              style={{
-                marginBottom: 0,
-              }}
-          >
-            <Select
-                showSearch
-                placeholder="chọn cơ sở quản lý"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                    (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                options={[
+                name="password"
+                noStyle
+                rules={[
                   {
-                    value: 'admin',
-                    label: 'Admin',
-                  },
-                  {
-                    value: 'factory',
-                    label: 'Cơ sở xản xuất A',
-                  },
-                  {
-                    value: 'warranty',
-                    label: 'Trung tâm bảo hành A',
-                  },
-                  {
-                    value: 'Đại lý phân phối A',
-                    label: 'distributor',
+                    required: true,
+                    message: "mật khẩu không được bỏ trống",
                   },
                 ]}
+              >
+                <Input
+                  style={{
+                    width: 160,
+                  }}
+                  placeholder="assword... "
+                  type="password"
+                />
+              </Form.Item>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            label="Quyền tài khoản"
+            style={{
+              marginBottom: 0,
+            }}
+          >
+            <Select
+              showSearch
+              placeholder="chọn cơ sở quản lý"
+              optionFilterProp="children"
+              filterOption={(input, option) =>
+                (option?.label ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              onChange={(value) => {
+                console.log(value);
+                setSelectedBranchId(value);
+              }}
+              options={branchesWithoutOwner?.map((branch, idx) => {
+                return {
+                  value: branch._id + "-" + branch.branchType,
+                  label: branch.branchName,
+                };
+              })}
             />
-
           </Form.Item>
 
           <Form.Item label=" " colon={false}>
-            <Button type="primary" htmlType="submit" className="my-3">
+            <Button type="primary" htmlType="submit" className="mt-4">
               Xác nhận
             </Button>
           </Form.Item>
         </Form>
-
       </Modal>
-      < Table className="py-5" columns={columns} dataSource={accounts} size="small"
-      pagination={{
-        pageSize: PAGE_SIZE
-      }}
+      <Table
+        className="py-5"
+        columns={columns}
+        dataSource={accounts}
+        size="small"
+        pagination={{
+          pageSize: PAGE_SIZE,
+        }}
       />
     </>
   );
