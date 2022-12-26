@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button, Image, Modal, Table } from "antd";
+import { Image, Modal, Table } from "antd";
 import { BACKEND_BASE_URL } from "../../constants";
+import castPrice from '../../utils/castPrice';
 
 const ProductDetailsModal = ({ setIsProductModalOpen, product }) => {
   const columnsPopup = [
@@ -42,7 +43,7 @@ const ProductDetailsModal = ({ setIsProductModalOpen, product }) => {
     {
       key: "6",
       property: "Giá",
-      description: product?.price,
+      description: castPrice(product?.price) + 'vnđ',
     },
     {
       key: "7",

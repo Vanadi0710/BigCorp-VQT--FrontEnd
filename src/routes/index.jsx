@@ -29,6 +29,7 @@ import Cashier from "../pages/distributor/components/cashier";
 import HistoryBuild from "../pages/distributor/components/historyBuild";
 import Requirement from "../pages/distributor/components/requirement";
 import Analysis from "../pages/distributor/components/analysis";
+import FactoryStore from "../pages/factory/components/store";
 import { useSelector } from "react-redux";
 import HistoryRequirement from "../pages/distributor/components/historyRequirement";
 import CreateRequirement from "../pages/distributor/components/createRequirement";
@@ -57,7 +58,7 @@ const Router = ({ notify }) => {
         <Route path="manufacture" element={<Manufacture notify={notify}/>} />
         <Route path="input-store" element={<InputStore notify={notify}/>} />
         <Route path="list-require" element={<ListRequirement />} />
-        <Route path="factories-store" element={<Store />} />
+        <Route path="factories-store" element={<FactoryStore />} />
         <Route path="static-sales" element={<StaticSales />} />
         <Route path="static-error" element={<StaticError />} />
           <Route path="history" element={<History/>}/>

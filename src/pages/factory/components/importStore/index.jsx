@@ -2,7 +2,6 @@ import { Button } from "antd";
 import React, { useState, useEffect } from "react";
 import { Table } from "antd";
 import factoryAPI from "../../../../api/factory.api";
-import productAPI from "../../../../api/product.api";
 import { PAGE_SIZE } from "../../../../constants";
 import { convertDate } from "../../../../utils/convertType";
 import { billDetail } from "../../../../utils/billDetail";
@@ -86,7 +85,7 @@ const ImportStore = ({notify}) => {
   };
 
   const getDevices = async () => {
-    let devices = await factoryAPI.getDevices(true);
+    let devices = await factoryAPI.getDevices(true, 'IDLE');
     devices = devices?.map((device, index) => {
       return {
         ...device,
@@ -100,6 +99,10 @@ const ImportStore = ({notify}) => {
   };
 
   const importToStore = async () => {
+    if(selectedRowKeys.length <= 0) {
+      notify('Ban chua chon san pham nao', 'INFO')
+      return
+    }
     let products = selectedRowKeys.map((item, index) => item.split('-')[1])
     let note = 'import: '
      billDetail(selectedRowKeys).map((item, index) => {

@@ -8,8 +8,8 @@ const importToStore = async (docBody) => {
     return (await AxiosAuth.post('/factory/products/transport-to-store', docBody)).data
 }
 
-const getDevices = async (tempStore = false) => {
-    return (await AxiosAuth.get(`/factory/products/instances?tempStore=${tempStore}`)).data
+const getDevices = async (tempStore = false, status) => {
+    return (await AxiosAuth.get(`/factory/products/instances?tempStore=${tempStore}&status=${status}`)).data
 }
 
 const factoryAPI = {
