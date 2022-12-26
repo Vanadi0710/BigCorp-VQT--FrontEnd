@@ -1,62 +1,107 @@
 import React, { useState } from 'react';
-import { Divider, Radio, Table } from 'antd';
+import {Divider, Image, Radio, Select, Table} from 'antd';
+import Search from "antd/es/input/Search";
 const Store = () => {
 
-    const rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-        getCheckboxProps: (record) => ({
-            disabled: record.name === 'Disabled User',
-            // Column configuration not to be checked
-            name: record.name,
-        }),
-    };
-
-
+    const onSearch = (value) => console.log(value);
+    const handleChange = (value) => {
+        console.log(value); // select status
+    }
     const columns = [
         {
-            title: 'Name',
+            title: 'Tên sản phẩm',
             dataIndex: 'name',
+            key: 'name',
             render: (text) => <a>{text}</a>,
+            width: 150,
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
+            title: 'hình ảnh',
+            dataIndex: 'img',
+            key: 'img',
+            width: 150,
+            render: (text) => <Image width={100} src={text}/>
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
+            title: 'Model',
+            dataIndex: 'model',
+            key: 'model',
         },
+        {
+            title: 'ngày sản xuất',
+            dataIndex: 'date',
+            key: 'date',
+            ellipsis: true,
+        },
+        {
+            title: 'số lượng',
+            dataIndex: 'number',
+            key: 'number',
+            ellipsis: true,
+        },
+        {
+            title: 'thuộc tính',
+            dataIndex: 'character',
+            key: 'character',
+            ellipsis: true,
+        },
+        {
+            title: 'status',
+            dataIndex: 'status',
+            key: 'status',
+            ellipsis: true,
+        }
+
+
     ];
     const data = [
         {
             key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
+            name: 'macbook',
+            img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            model: 'MB1',
+            date: '19/10/2001',
+            number: '10',
+            character: 'mượt ',
+            status: 'hàng thu hồi',
+
         },
         {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
+            key: '1',
+            name: 'macbook',
+            img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            model: 'MB1',
+            date: '19/10/2001',
+            number: '10',
+            character: 'mượt ',
+            status: 'hàng sản xuất',
+
         },
         {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
+            key: '1',
+            name: 'macbook',
+            img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            model: 'MB1',
+            date: '19/10/2001',
+            number: '10',
+            character: 'mượt ',
+            status: 'hàng sản xuất',
+
         },
         {
-            key: '4',
-            name: 'Disabled User',
-            age: 99,
-            address: 'Sidney No. 1 Lake Park',
-        },
+            key: '1',
+            name: 'macbook',
+            img: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+            model: 'MB1',
+            date: '19/10/2001',
+            number: '10',
+            character: 'mượt ',
+            status: 'hàng thu hồi',
+
+        }
     ];
-    const [selectionType, setSelectionType] = useState('checkbox');
     return (
+
         <div>
 
             <div className="py-4">
@@ -64,17 +109,39 @@ const Store = () => {
             </div>
             <hr/>
 
-            <Table
-                rowSelection={{
-                    type: selectionType,
-                    ...rowSelection,
-                }}
-                columns={columns}
-                dataSource={data}
-            />
+            <div className="row py-3">
+                <div className="col-3">
+                    <Select
+                        labelInValue
+                        defaultValue={{
+                            value: 'prosseding',
+                            label: 'Đang xản xuất',
+                        }}
+                        style={{
+                            width: 300,
+                        }}
+                        onChange={handleChange}
+                        options={[
+                            {
+                                value: 'recover',
+                                label: 'Thu hồi',
+                            },
+                            {
+                                value: 'prosseding',
+                                label: 'Đang xản xuất',
+                            },
+                        ]}
+                        />
+
+                </div>
+                <div className="col-3">
+                    <Search placeholder="Nhập từ muốn search" onSearch={onSearch} enterButton />
+                </div>
+            </div>
+
+            <Table columns={columns} dataSource={data} />;
         </div>
     );
 
 }
 export default Store
-

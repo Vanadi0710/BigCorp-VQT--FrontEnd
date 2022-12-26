@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Modal, Popconfirm, Select, Table } from "antd";
+import {Button, Form, Input, Modal, Popconfirm, Select, Space, Table} from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 const EditableContext = React.createContext(null);
 const EditableRow = ({ index, ...props }) => {
@@ -101,6 +101,12 @@ const Customer = () => {
   };
   const handleCancelFactory = () => {
     setIsModalOpenFactory(false);
+  };
+  // đăng ký popup khách hàng
+   const [open, setOpen] = useState(false);
+   // submit form
+  const onFinish = (values) => {
+    console.log('Received values of form: ', values);
   };
   const [dataSource, setDataSource] = useState([
     {
@@ -274,14 +280,13 @@ const Customer = () => {
         </div>
         <hr />
       </div>
-      <Button
-        onClick={handleAdd}
+      <Button onClick={() => setOpen(true)}
         type="primary"
         style={{
           marginBottom: 16,
         }}
       >
-        Thêm khách hàng
+        Tạo mã khách hàng
       </Button>
       <Table
         components={components}
@@ -349,6 +354,97 @@ const Customer = () => {
             },
           ]}
         />
+      </Modal>
+      {/*//popup đăng ký khách hàng*/}
+      <Modal
+          title="Tạo mã khách hàng"
+          centered
+          open={open}
+          onOk={() => setOpen(false)}
+          onCancel={() => setOpen(false)}
+          width={600}
+      >
+        <Form
+            name="complex-form"
+            onFinish={onFinish}
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+        >
+          <Form.Item label="Tên khách hàng">
+            <Space>
+              <Form.Item
+                  name="username"
+                  noStyle
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Tên không được bỏ trống',
+                    },
+                  ]}
+              >
+                <Input
+                    style={{
+                      width: 160,
+                    }}
+                    placeholder="Nhập tên .... "
+                />
+              </Form.Item>
+            </Space>
+          </Form.Item>
+          <Form.Item label="số điện thoại ">
+            <Input.Group compact>
+
+              <Form.Item
+                  name={['phone', 'phone']}
+                  noStyle
+                  rules={[
+                    {
+                      required: true,
+                      message: 'số điện thoại không được bỏ trống',
+                    },
+                  ]}
+              >
+                <Input
+                    style={{
+                      width: '50%',
+                    }}
+                    placeholder="SDT... "
+                />
+              </Form.Item>
+            </Input.Group>
+          </Form.Item>
+          <Form.Item label="Địa chỉ">
+            <Input.Group compact>
+
+              <Form.Item
+                  name={['address', 'address']}
+                  noStyle
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Địa không được bỏ trống',
+                    },
+                  ]}
+              >
+                <Input
+                    style={{
+                      width: '50%',
+                    }}
+                    placeholder="Địa chỉ... "
+                />
+              </Form.Item>
+            </Input.Group>
+          </Form.Item>
+          <Form.Item label=" " colon={false}>
+            <Button type="primary" htmlType="Xác nhận" className="my-3">
+              Xác nhận
+            </Button>
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );
