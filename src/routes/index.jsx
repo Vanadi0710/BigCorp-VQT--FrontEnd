@@ -18,11 +18,17 @@ import CreateRequire from "../pages/warrantyCenter/components/createRequire";
 import Manufacture from "../pages/factory/components/manufacture";
 import Store from "../pages/factory/components/store";
 import StaticSales from "../pages/factory/components/static/staticSales";
+import StaticSalesDistributor from "../pages/distributor/components/static";
 import StaticError from "../pages/factory/components/static/staticError";
 import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
 import ListRequirement from "../pages/factory/components/listRequirement";
 import InputStore from "../pages/factory/components/importStore";
 import Custome from "../pages/admin/components/custome";
+import History from "../pages/factory/components/history";
+import Cashier from "../pages/distributor/components/cashier";
+import HistoryBuild from "../pages/distributor/components/historyBuild";
+import Requirement from "../pages/distributor/components/requirement";
+import Analyse from "../pages/distributor/components/analyse";
 
 const Router = ({notify}) => {
   return (
@@ -47,8 +53,18 @@ const Router = ({notify}) => {
           <Route path="factories-store" element={<Store/>}/>
           <Route path="static-sales" element={<StaticSales/>}/>
           <Route path="static-error" element={<StaticError/>}/>
+          <Route path="history" element={<History/>}/>
+
       </Route>
       <Route path="/distributor" element={<Distributor />}>
+          <Route path="cashier" element={<Cashier />}/>
+          <Route path="history-cashier" element={<HistoryBuild/>}/>
+          <Route path="handle" element={<Requirement/>}/>
+          <Route path="create-require" element={<CreateRequire/>}/>
+          <Route path="store" element={<Store/>}/>
+          <Route path="statistics-require" element={<StaticSalesDistributor/>}/>
+          <Route path="analyse-product" element={<Analyse/>}/>
+
 
       </Route>
       <Route path="/warranty-center" element={<WarrantyCenter />}>

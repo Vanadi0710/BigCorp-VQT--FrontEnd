@@ -1,42 +1,15 @@
-import {Button, Form, Input, InputNumber, Upload} from "antd";
+import {Button, Form, Input, InputNumber, Modal, Upload} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {PlusOutlined} from "@ant-design/icons";
 import React, { useState } from 'react';
 import { Table } from 'antd';
-const columns = [
-    // mã đơn , tên cơ sở yêu cầu , trạng thái , chi tiết , action
-    {
-        title: 'Mã đơn',
-        dataIndex: 'code',
-        key: 'code',
 
-    },
-    {
-        title: 'Tên cơ sở ',
-        dataIndex: 'codeName',
-        key: 'codeName'
-    },
-
-    {
-        title: 'Trạng thái  ',
-        dataIndex: 'status',
-        key: 'status',
-    },
-
-    {
-        title: ' Thông tin  ',
-        dataIndex: 'action',
-        key : 'action',
-        render:  () => <Button type="primary"> chi tiết</Button>,
-
-
-    },
-];
 const data = [
     {
         key: '1',
         code: 'ST1010',
         codeName: 'E20',
+        date: '15/10/2023',
         status: 'Chưa xác nhận',
 
     },
@@ -44,6 +17,7 @@ const data = [
         key: '2',
         code: 'ST1010',
         codeName: 'E20',
+        date: '15/10/2023',
         status: 'Chưa xác nhận',
 
     },
@@ -51,6 +25,7 @@ const data = [
         key: '3',
         code: 'ST1010',
         codeName: 'E20',
+        date: '15/10/2023',
         status: 'Chưa xác nhận',
 
     },
@@ -58,6 +33,7 @@ const data = [
         key: '4',
         code: 'ST1010',
         codeName: 'E20',
+        date: '15/10/2023',
         status: 'Chưa xác nhận',
 
     },
@@ -65,12 +41,24 @@ const data = [
         key: '5',
         code: 'ST1010',
         codeName: 'E20',
+        date: '15/10/2023',
         status: 'Chưa xác nhận',
 
     }
 
 ];
 const ListRequirement = () => {
+    //model open info đơn hàng
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -113,6 +101,73 @@ const ListRequirement = () => {
             },
         ],
     };
+    const columns = [
+        // mã đơn , tên cơ sở yêu cầu , trạng thái , chi tiết , action
+        {
+            title: 'Mã đơn',
+            dataIndex: 'code',
+            key: 'code',
+
+        },
+        {
+            title: 'Tên cơ sở yêu cầu',
+            dataIndex: 'codeName',
+            key: 'codeName'
+        },
+
+        {
+            title: 'Ngày tạo yêu cầu',
+            dataIndex: 'date',
+            key: 'date',
+        },
+        {
+            title: 'Trạng thái  ',
+            dataIndex: 'status',
+            key: 'status',
+        },
+
+        {
+            title: ' Thông tin  ',
+            dataIndex: 'info',
+            key : 'info',
+            render:  () => <Button type="primary" onClick={showModal}>chi tiết</Button>,
+        },
+        {
+            title: ' Action  ',
+            dataIndex: 'action',
+            key : 'action',
+            render:  () => <Button  danger>Xác nhận</Button>,
+        },
+
+    ];
+    const columnsModels = [
+        {
+            title: 'Tên sản phẩm',
+            dataIndex: 'name',
+            key: 'name',
+        },
+        {
+            title: 'Model  ',
+            dataIndex: 'model',
+            key: 'model',
+
+        },
+
+        {
+            title: 'Số lượng',
+            dataIndex: 'number',
+            key: 'number',
+        },
+    ];
+    const dataModels = [
+        {
+            key: '1',
+            name: 'Macbook',
+            model: 'MB1',
+            number: '3',
+
+        }
+    ];
     return (
         <div>
             <div className="py-4">
@@ -120,6 +175,10 @@ const ListRequirement = () => {
             </div>
             <hr/>
             <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+            <Button type="primary">Xác nhận yêu cầu</Button>
+            <Modal title="Chi tiết đơn hàng" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <Table  columns={columnsModels} dataSource={dataModels} pagination={false}/>
+            </Modal>
 
         </div>
     );
