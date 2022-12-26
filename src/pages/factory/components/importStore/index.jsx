@@ -1,129 +1,147 @@
-import {Button, Form, Input, InputNumber, Upload} from "antd";
-import TextArea from "antd/es/input/TextArea";
-import {PlusOutlined} from "@ant-design/icons";
-import React, { useState } from 'react';
-import { Table } from 'antd';
+import { Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Table } from "antd";
+import factoryAPI from "../../../../api/factory.api";
+import productAPI from "../../../../api/product.api";
+import { PAGE_SIZE } from "../../../../constants";
+import { convertDate } from "../../../../utils/convertType";
+import { billDetail } from "../../../../utils/billDetail";
+
 const columns = [
-    {
-        title: 'Tên sản phẩm',
-        dataIndex: 'name',
-        key: 'name',
+  {
+    title: "id",
+    dataIndex: "id",
+  },
+  {
+    title: "Tên sản phẩm",
+    dataIndex: "productName",
+    key: "productName",
+  },
+  {
+    title: "Model ",
+    dataIndex: "model",
+    key: "model",
+  },
 
-    },
-    {
-        title: 'Model ',
-        dataIndex: 'model',
-        key: 'model'
-    },
-
-    {
-        title: ' Ngày sản xuất ',
-        dataIndex: 'date',
-        key: 'date',
-    },
-    {
-        title: ' Thông tin  ',
-        dataIndex: 'action',
-        key : 'action',
-        render:  () => <Button type="primary"> chi tiết</Button>,
-
-
-    },
+  {
+    title: " Ngày sản xuất ",
+    dataIndex: "producedDate",
+    key: "producedDate",
+  },
+  {
+    title: " Thông tin",
+    key: "action",
+    render: (product) => (
+      <Button type="primary" onClick={() => console.log(product)}>
+        {" "}
+        chi tiết
+      </Button>
+    ),
+  },
 ];
-const data = [
-    {
-        key: '1',
-        name: 'Macbook',
-        model: 'MB1',
-        date : '19/20/2022',
 
+const ImportStore = ({notify}) => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [devices, setDevices] = useState([]);
+  const onSelectChange = (newSelectedRowKeys) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
 
-    },
-    {
-        key: 'number',
-        name: 'Macbook',
-        model: 'MB1',
-        date : '19/20/2022',
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      Table.SELECTION_ALL,
+      Table.SELECTION_INVERT,
+      Table.SELECTION_NONE,
+      {
+        key: "odd",
+        text: "Select Odd Row",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((_, index) => {
+            if (index % 2 !== 0) {
+              return false;
+            }
+            return true;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+      {
+        key: "even",
+        text: "Select Even Row",
+        onSelect: (changableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changableRowKeys.filter((_, index) => {
+            if (index % 2 !== 0) {
+              return true;
+            }
+            return false;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+    ],
+  };
 
+  const getDevices = async () => {
+    let devices = await factoryAPI.getDevices(true);
+    devices = devices?.map((device, index) => {
+      return {
+        ...device,
+        productName: device?.product?.productName,
+        producedDate: convertDate(device.producedDate),
+        key: index + "-" + device._id + "-" + device?.product?.productName,
+        id: index + 1,
+      };
+    });
+    setDevices(devices);
+  };
 
-    }, {
-        key: '3',
-        name: 'Macbook',
-        model: 'MB1',
-        date : '19/20/2022',
+  const importToStore = async () => {
+    let products = selectedRowKeys.map((item, index) => item.split('-')[1])
+    let note = 'import: '
+     billDetail(selectedRowKeys).map((item, index) => {
+      note += (index > 0 ? ', ' : '') + item.productName + ": " + item.quantity
+     })
+    try {
+      await factoryAPI.importToStore({products, note})
+      setSelectedRowKeys([])
+      getDevices()
+      notify('Đã nhập vào kho')
+    } catch(e) {
+      console.log(e)
+      notify(e.response?.data, 'ERROR')
+    }
+  }
 
+  useEffect(() => {
+    getDevices();
+  }, []);
+  return (
+    <div>
+      <div className="py-4">
+        <h3>Nhập vào kho </h3>
+      </div>
+      <hr />
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={devices}
+        pagination={{ pageSize: PAGE_SIZE }}
+      />
 
-    }, {
-        key: '4',
-        name: 'Macbook',
-        model: 'MB1',
-        date : '19/20/2022',
-
-
-    },
-
-];
-const ImportStore = () => {
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-    const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-        setSelectedRowKeys(newSelectedRowKeys);
-    };
-
-    const rowSelection = {
-        selectedRowKeys,
-        onChange: onSelectChange,
-        selections: [
-            Table.SELECTION_ALL,
-            Table.SELECTION_INVERT,
-            Table.SELECTION_NONE,
-            {
-                key: 'odd',
-                text: 'Select Odd Row',
-                onSelect: (changableRowKeys) => {
-                    let newSelectedRowKeys = [];
-                    newSelectedRowKeys = changableRowKeys.filter((_, index) => {
-                        if (index % 2 !== 0) {
-                            return false;
-                        }
-                        return true;
-                    });
-                    setSelectedRowKeys(newSelectedRowKeys);
-                },
-            },
-            {
-                key: 'even',
-                text: 'Select Even Row',
-                onSelect: (changableRowKeys) => {
-                    let newSelectedRowKeys = [];
-                    newSelectedRowKeys = changableRowKeys.filter((_, index) => {
-                        if (index % 2 !== 0) {
-                            return true;
-                        }
-                        return false;
-                    });
-                    setSelectedRowKeys(newSelectedRowKeys);
-                },
-            },
-        ],
-    };
-    return (
-        <div>
-            <div className="py-4">
-                <h3>Nhập vào kho </h3>
-            </div>
-            <hr/>
-            <Table rowSelection={rowSelection} columns={columns} dataSource={data} pagination={{pageSize: 7}}/>
-            <Button type="primary">Nhập hàng</Button>
-            <div>
-                <h3>Sản phẩm đã chọn : </h3>
-            </div>
-
-        </div>
-    );
-
-
-}
-export default  ImportStore
-
-
+      <div>
+        <h4 className="pb-2">Sản phẩm đã chọn : </h4>
+        {billDetail(selectedRowKeys).map((item, index) => (
+          <p key={index} className="ps-3">
+            {item.productName}: {item.quantity}
+          </p>
+        ))}
+      </div>
+      <Button type="primary" className="mt-2" onClick={importToStore}>Nhập hàng</Button>
+    </div>
+  );
+};
+export default ImportStore;

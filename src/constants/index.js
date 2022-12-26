@@ -1,6 +1,6 @@
 export const BACKEND_BASE_URL = 'http://localhost:8000'
 
-export const PAGE_SIZE = 6
+export const PAGE_SIZE = 8
 
 export const STATS_MONTHLY = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 export const STATS_QUARTERLY = ['First Quarter', 'Second Quarter', 'Third Quarter', 'Fourth Quarter']
