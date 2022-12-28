@@ -1,7 +1,7 @@
 import {Tabs} from "antd";
-import WarrantyComponent from "../requirement/components/warrantyComponent";
 import CreateRecover from "./components/createRecover";
 import WarrantyMent from "./components/warrantyment";
+import CreateRequireFactory from "./components/createFactory";
 const CreateRequirement = () => {
     const onChange = (key) => {
         console.log(key);
@@ -27,6 +27,11 @@ const CreateRequirement = () => {
                             label: `Tạo yêu cầu bảo hành`,
                             key: 'warranty',
                             children: <WarrantyMent/>,
+                        },
+                        {
+                            label: `Tạo yêu cầu nhập`,
+                            key: 'factory',
+                            children: <CreateRequireFactory/>,
                         },
 
                     ]}

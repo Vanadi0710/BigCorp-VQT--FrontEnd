@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Form, Table, Tag, Select } from "antd";
+import {Form, Table, Tag, Select, Button, Modal} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Search from "antd/es/input/Search";
 import { Link, Outlet, useParams } from "react-router-dom";
 import branchAPI from "../../../../../api/branch.api";
+import ModalAdd from "../modalAdd/modalAdd";
 
 const DistributorsAdmin = () => {
   const columns = [
@@ -78,6 +79,17 @@ const DistributorsAdmin = () => {
     getBranches();
   }, []);
 
+  //pop up add cơ sở
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
       {!branchId && (
@@ -87,14 +99,17 @@ const DistributorsAdmin = () => {
             <hr />
             <div className="row">
               <div className="col-2">
-                <button className="btn btn-primary py-2">
+                <Button type="primary" onClick={showModal}>
                   <PlusOutlined />
                   Thêm cơ sở
-                </button>
+                </Button>
               </div>
+              <Modal title="Thêm cơ sở" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <ModalAdd/>
+              </Modal>
               <div className="col-2">
                 <Select
-                  size="large"
+
                   defaultValue=""
                   style={{
                     width: 200,
@@ -117,7 +132,6 @@ const DistributorsAdmin = () => {
                   placeholder="Nhập từ khoá tìm kiếm ....."
                   allowClear
                   enterButton="Search"
-                  size="large"
                   onSearch={onSearch}
                 />
               </div>
