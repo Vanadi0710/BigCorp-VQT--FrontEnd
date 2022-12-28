@@ -21,7 +21,7 @@ import StaticSalesDistributor from "../pages/distributor/components/static";
 import DistributorChart from "../pages/admin/components/statistics/distributor/distributorChart";
 import ListRequirement from "../pages/factory/components/listRequirement";
 import InputStore from "../pages/factory/components/importStore";
-import Customer from "../pages/admin/components/customer";
+import Customer from "../pages/admin/components/management/manageCustomer";
 import History from "../pages/factory/components/history";
 import Cashier from "../pages/distributor/components/cashier";
 import HistoryBuild from "../pages/distributor/components/historyBuild";
@@ -49,7 +49,7 @@ const Router = ({ notify }) => {
         <Route path="factories" element={<FactoriesAdmin />}>
           <Route path=":branchId" element={<FactoryChart />} />
         </Route>
-        <Route path="customer" element={<Customer />} />
+        <Route path="customer" element={<Customer notify={notify}/>} />
         <Route path="warranty-centers" element={<WarrantyCenterAdmin />}>
           <Route path=":branchId" element={<WarrantyCenterChart />} />
         </Route>
