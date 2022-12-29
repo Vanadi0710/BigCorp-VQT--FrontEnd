@@ -14,12 +14,13 @@ function getItem(label, key, icon, children, type) {
 }
 const items = [
     getItem("Yêu cầu", "sub1", <UnorderedListOutlined />, [
-        getItem("Nhận hàng", "comfirm-product"),
+        getItem("Xử lý yêu cầu", "import-product"),
         getItem("Tạo yêu cầu", "create-require"),
-        getItem("Kho", "store"),
+        getItem("Lịch sử yêu cầu", "history-requirement"),
     ]),
 
     getItem("Thống kê", "sub2", <UnorderedListOutlined />, [
+        getItem("Kho", "store"),
         getItem("Thống kê sản phẩm", "warranty-static"),
 
     ]),

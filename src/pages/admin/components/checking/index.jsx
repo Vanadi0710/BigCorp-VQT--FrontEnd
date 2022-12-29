@@ -1,106 +1,142 @@
-import {Input, Form, Select, Button, Tag, Table,} from 'antd';
+import {Input, Form, Select, Button, Tag, Table, Modal,} from 'antd';
 
-import React from "react";
+import React, {useState} from "react";
 import './style.scss';
 
-const columns = [
-    {
-        title: 'Mã sản phẩm',
-        dataIndex: 'code',
-        key: 'code',
-        render: (text) => <Button>{text}</Button>,
-    },
-    {
-        title: 'Tên sản phẩm',
-        dataIndex: 'name',
-        key: 'name',
-
-    },
-    {
-        title: 'Tên cơ sở',
-        dataIndex: 'name_factory',
-        key: 'name_factory',
-        render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'Trạng thái',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: (_, { tags }) => (
-            <>
-                {tags.map((tag) => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
-    },
-    {
-        title: 'Số lượng',
-        dataIndex: 'number',
-        key: 'number',
-
-    },
-    {
-        title: 'Chi tiết',
-        dataIndex: 'information',
-        key: 'information',
-        render: (text) => <Button>{text}</Button>,
-    },
-];
-
-const datas = [
-    {
-        key: 'sp1',
-        code: 'MB1',
-        name: 'Macbook',
-        name_factory: 'cơ sở 1',
-        tags: ['Đang bán'],
-        number: '2',
-        information: 'chi tiết',
-    },
-    {
-        key: 'sp2',
-        code: 'MB1',
-        name: 'Macbook',
-        name_factory: 'cơ sở 1',
-        tags: ['Đang bán'],
-        number: '2',
-        information: 'chi tiết',
-    },
-    {
-        key: 'sp3',
-        code: 'MB1',
-        name: 'Macbook',
-        name_factory: 'cơ sở 1',
-        tags: ['Đang bán'],
-        number: '2',
-        information: 'chi tiết',
-    },
-    {
-        key: 'sp4',
-        code: 'MB1',
-        name: 'Macbook',
-        name_factory: 'cơ sở 1',
-        tags: ['Đang bán'],
-        number: '2',
-        information: 'chi tiết',
-    }
-];
-
 const CheckingProduct = () => {
+
+    const columns = [
+        {
+            title: 'Mã sản phẩm',
+            dataIndex: 'code',
+            key: 'code',
+            render: (text) => <Button>{text}</Button>,
+        },
+        {
+            title: 'Tên sản phẩm',
+            dataIndex: 'name',
+            key: 'name',
+
+        },
+        {
+            title: 'Tên cơ sở',
+            dataIndex: 'name_factory',
+            key: 'name_factory',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: 'Trạng thái',
+            key: 'tags',
+            dataIndex: 'tags',
+            render: (_, { tags }) => (
+                <>
+                    {tags.map((tag) => {
+                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        if (tag === 'loser') {
+                            color = 'volcano';
+                        }
+                        return (
+                            <Tag color={color} key={tag}>
+                                {tag.toUpperCase()}
+                            </Tag>
+                        );
+                    })}
+                </>
+            ),
+        },
+        {
+            title: 'Số lượng',
+            dataIndex: 'number',
+            key: 'number',
+
+        },
+        {
+            title: 'Chi tiết',
+            dataIndex: 'information',
+            key: 'information',
+            render: (text) => <Button onClick={showModal}>{text}</Button>,
+        },
+    ];
+
+    const datas = [
+        {
+            key: 'sp1',
+            code: 'MB1',
+            name: 'Macbook',
+            name_factory: 'cơ sở 1',
+            tags: ['Đang bán'],
+            number: '2',
+            information: 'chi tiết',
+        },
+        {
+            key: 'sp2',
+            code: 'MB1',
+            name: 'Macbook',
+            name_factory: 'cơ sở 1',
+            tags: ['Đang bán'],
+            number: '2',
+            information: 'chi tiết',
+        },
+        {
+            key: 'sp3',
+            code: 'MB1',
+            name: 'Macbook',
+            name_factory: 'cơ sở 1',
+            tags: ['Đang bán'],
+            number: '2',
+            information: 'chi tiết',
+        },
+        {
+            key: 'sp4',
+            code: 'MB1',
+            name: 'Macbook',
+            name_factory: 'cơ sở 1',
+            tags: ['Đang bán'],
+            number: '2',
+            information: 'chi tiết',
+        }
+    ];
+
     const onSearch = (value) => console.log(value);
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     }
+    //popup
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
+    // data table popup
+    const columsPopup = [
+        {
+           title: 'STT',
+           dataIndex: 'index',
+        },
+        {
+            title: 'Action',
+            dataIndex: 'action',
+        },
+        {
+            title: 'From',
+            dataIndex: 'from',
+        },
+        {
+            title: 'To',
+            dataIndex: 'to',
+        },
+        {
+            title: 'date',
+            dataIndex: 'level',
+        },
+
+    ]
 
     return (
         <div className="">
@@ -182,7 +218,7 @@ const CheckingProduct = () => {
                         </div>
                     <div className="col-3 ">
                         <h4 className="lable-search">:</h4>
-                        <Button size="large" type="primary">Checking</Button>
+                        <Button  type="primary">Checking</Button>
 
                     </div>
 
@@ -190,6 +226,9 @@ const CheckingProduct = () => {
                 </Form>
             <hr/>
             <Table columns={columns} dataSource={datas}/>
+            <Modal title="Checking" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+
+            </Modal>
 
 
         </div>

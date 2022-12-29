@@ -3,6 +3,7 @@ import Header from "../../components/header";
 import React, {useState} from "react";
 
 import {Outlet, useLocation} from "react-router-dom";
+import Sider from "antd/es/layout/Sider";
 
 const WarrantyCenter = () => {
     const [currentRoute, setCurrentRoute] = useState('factories')
