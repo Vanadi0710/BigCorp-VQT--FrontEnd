@@ -1,3 +1,4 @@
+
 import { Input, Form, Select, Button, Tag, Table, Modal } from "antd";
 
 import React, { useState, useEffect } from "react";
@@ -125,7 +126,6 @@ const CheckingProduct = () => {
     });
     setProducts(data);
   };
-
   useEffect(() => {
     getProducts();
   }, []);

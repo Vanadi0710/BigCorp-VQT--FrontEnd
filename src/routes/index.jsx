@@ -13,7 +13,7 @@ import Information from "../pages/admin/components/information";
 import Distributor from "../pages/distributor";
 import ManageProduct from "../pages/admin/components/management/manageProduct";
 import ManageAccount from "../pages/admin/components/management/manageAccount";
-import ComfirmProduct from "../pages/warrantyCenter/components/comfirmProduct";
+import ComfirmProduct from "../pages/warrantyCenter/components/importProduct";
 import CreateRequire from "../pages/warrantyCenter/components/createRequire";
 import Manufacture from "../pages/factory/components/manufacture";
 import Store from "../pages/factory/components/store";
@@ -34,6 +34,8 @@ import CreateRequirement from "../pages/distributor/components/createRequirement
 import FactoryStatistic from "../pages/factory/components/statistics";
 import FactoryChart from "../pages/admin/components/statistics/factory/factoryChart";
 import WarrantyCenterChart from "../pages/admin/components/statistics/warrantyCenter/warrantyCenterChart";
+import HistoryRequirementWarranty from "../pages/warrantyCenter/components/historyRequirement";
+import StoreWarranty from "../pages/warrantyCenter/components/store";
 
 const Router = ({ notify }) => {
   const auth = useSelector((state) => state.auth);
@@ -81,9 +83,10 @@ const Router = ({ notify }) => {
       </Route>
 
       <Route path="/warranty-center" element={<WarrantyCenter />}>
-        <Route path="confirm-product" element={<ComfirmProduct />} />
+        <Route path="import-product" element={<ComfirmProduct />} />
         <Route path="create-require" element={<CreateRequire />} />
-        <Route path="store" element={<Store />} />
+        <Route path="history-requirement" element={<HistoryRequirementWarranty />} />
+        <Route path="store" element={<StoreWarranty />} />
       </Route>
       <Route path="/sign-in" element={<LogIn notify={notify} />} />
       <Route path="*" element={<PageNotFound />} />

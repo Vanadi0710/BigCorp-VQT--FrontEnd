@@ -15,7 +15,7 @@ const WarrantyMent = () => {
                     <div>
                         <span style={{color: "red"}}>Lưu ý : nếu sản phẩm không có mã khách hàng thì từ chối bảo hành !</span>
                     </div>
-                    <h5>Nhập mã sản phẩm thu hồi</h5>
+                    <h5>Nhập mã sản phẩm bảo hành</h5>
                     <Input className="my-2" placeholder="Nhập mã sản phẩm ...." />
                     <div className="py-4">
                         <List
