@@ -56,13 +56,27 @@ export function convertProcessTypeToColor(processType) {
 
     case "UNDER_WARRANTY":
     case "RETURNED_TO_FACTORY":
-      return "volcano-4";
+      return "orange";
 
     case "FAILED_NEED_TO_WARRANTY":
     case "FAILED_NEED_TO_FACTORY":
     case "FAILED_NEED_TO_SUMMON":
     case "FAILED_SENT_TO_FACTORY":
-      return "volcano-7";
+      return "red";
+
+    default:
+      return "blue";
+  }
+}
+
+export function convertStatusToColor(status) {
+  switch (status) {
+    case "PENDING":
+      return "orange";
+    case "CANCELED":
+      return "red";
+    case "CONFIRMED":
+      return "blue";
 
     default:
       return "blue";
