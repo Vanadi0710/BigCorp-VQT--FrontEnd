@@ -10,7 +10,11 @@ const Customer = ({notify}) => {
     {
       title: 'id',
       dataIndex: 'id',
-
+    },
+    {
+      title: 'Mã khách hàng',
+      dataIndex: 'code',
+      key: 'code'
     },
     {
       title: "Tên khách hàng",

@@ -1,0 +1,20 @@
+.search-box-cashier {
+    position: relative;
+    .result-search-box-cashier {
+        position: absolute;
+        z-index: 1000;
+        background-color: white;
+        width: 100%;
+        max-height: 300px;
+        overflow: scroll;
+        overflow-x: hidden;
+
+        .item {
+            cursor: pointer;
+            &:hover {
+                background-color: rgb(230, 226, 226);
+            }
+        }
+    }
+}
+

@@ -2,7 +2,7 @@ import {AxiosAuth} from '../services/AxiosService'
 
 const getCustomers = async (params) => {
     return (await AxiosAuth.get('/customers', {
-        params
+        params: params
     })).data
 }
 
