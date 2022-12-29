@@ -13,7 +13,7 @@ const FactoryStore = () => {
      getProducts(value)
   };
 
-  const getProducts = async (status = 'IN_STOCK') => {
+  const getProducts = async (status = 'IMPORTED_STORE') => {
     let products = await factoryAPI.getDevices(false, status);
     products = products.map((product, index) => {
       return {

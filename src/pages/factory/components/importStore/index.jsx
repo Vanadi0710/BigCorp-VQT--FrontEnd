@@ -85,7 +85,7 @@ const ImportStore = ({notify}) => {
   };
 
   const getDevices = async () => {
-    let devices = await factoryAPI.getDevices(true, 'IDLE');
+    let devices = await factoryAPI.getDevices(true, 'NEWLY_PRODUCED');
     devices = devices?.map((device, index) => {
       return {
         ...device,

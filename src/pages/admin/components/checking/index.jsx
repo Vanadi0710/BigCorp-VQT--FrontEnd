@@ -1,237 +1,234 @@
-import {Input, Form, Select, Button, Tag, Table, Modal,} from 'antd';
 
-import React, {useState} from "react";
-import './style.scss';
+import { Input, Form, Select, Button, Tag, Table, Modal } from "antd";
+
+import React, { useState, useEffect } from "react";
+import "./style.scss";
+import productAPI from "../../../../api/product.api";
+import {
+  convertDate,
+  convertProductProcessType,
+  convertProcessTypeToColor,
+} from "../../../../utils/convertType";
+import { PAGE_SIZE } from "../../../../constants";
 
 const CheckingProduct = () => {
+  const [products, setProducts] = useState([]);
+  const [productIsPicked, setProductIsPicked] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [keySearch, setKeySearch] = useState("");
+  const [typeKeySearch, setTypeKeySearch] = useState("productName");
+  const [typeSearchBranch, setTypeSearchBranch] = useState("");
 
-    const columns = [
-        {
-            title: 'Mã sản phẩm',
-            dataIndex: 'code',
-            key: 'code',
-            render: (text) => <Button>{text}</Button>,
-        },
-        {
-            title: 'Tên sản phẩm',
-            dataIndex: 'name',
-            key: 'name',
+  const columns = [
+    {
+      title: "id",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Mã sản phẩm",
+      dataIndex: "model",
+      key: "model",
+    },
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "productName",
+      key: "productName",
+    },
+    {
+      title: "Cơ sở",
+      dataIndex: "branchName",
+      key: "branchName",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ngày sản xuất",
+      dataIndex: "producedDate",
+      key: "producedDate",
+    },
+    {
+      title: "Trạng thái",
+      key: "status",
+      dataIndex: "status",
+      render: ({ status, color }) => (
+        <Tag color={color}>{status.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: "Theo dõi",
+      render: (data) => (
+        <Button className="btn btn-primary" onClick={() => showModal(data)}>
+          KIểm tra
+        </Button>
+      ),
+    },
+  ];
 
-        },
-        {
-            title: 'Tên cơ sở',
-            dataIndex: 'name_factory',
-            key: 'name_factory',
-            render: (text) => <a>{text}</a>,
-        },
-        {
-            title: 'Trạng thái',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (_, { tags }) => (
-                <>
-                    {tags.map((tag) => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
-            title: 'Số lượng',
-            dataIndex: 'number',
-            key: 'number',
+  const columnsPopup = [
+    {
+      title: "id",
+      dataIndex: "id",
+    },
+    {
+      title: "Hoạt động",
+      dataIndex: "action",
+    },
+    {
+      title: "Cơ sở / Khách hàng",
+      dataIndex: "to",
+    },
+    {
+      title: "Ngày hoạt động",
+      dataIndex: "date",
+    },
+  ];
 
-        },
-        {
-            title: 'Chi tiết',
-            dataIndex: 'information',
-            key: 'information',
-            render: (text) => <Button onClick={showModal}>{text}</Button>,
-        },
-    ];
+  const showModal = async (data) => {
+    setIsModalOpen(true);
+    let product = await productAPI.getProductInstance(data._id);
+    product = product?.progress?.map((item, ind) => {
+      return {
+        id: ind + 1,
+        action: convertProductProcessType(item.action),
+        to: item.location?.branchName
+          ? item.location.branchName
+          : item.customer?.customerName
+          ? item.customer?.customerName
+          : "",
+        date: convertDate(item.date),
+      };
+    });
+    setProductIsPicked(product);
+  };
 
-    const datas = [
-        {
-            key: 'sp1',
-            code: 'MB1',
-            name: 'Macbook',
-            name_factory: 'cơ sở 1',
-            tags: ['Đang bán'],
-            number: '2',
-            information: 'chi tiết',
-        },
-        {
-            key: 'sp2',
-            code: 'MB1',
-            name: 'Macbook',
-            name_factory: 'cơ sở 1',
-            tags: ['Đang bán'],
-            number: '2',
-            information: 'chi tiết',
-        },
-        {
-            key: 'sp3',
-            code: 'MB1',
-            name: 'Macbook',
-            name_factory: 'cơ sở 1',
-            tags: ['Đang bán'],
-            number: '2',
-            information: 'chi tiết',
-        },
-        {
-            key: 'sp4',
-            code: 'MB1',
-            name: 'Macbook',
-            name_factory: 'cơ sở 1',
-            tags: ['Đang bán'],
-            number: '2',
-            information: 'chi tiết',
-        }
-    ];
-
-    const onSearch = (value) => console.log(value);
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    }
-    //popup
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-        setIsModalOpen(true);
+  const handleChecking = () => {
+    let params = {
+      [typeKeySearch]: keySearch,
+      branchType: typeSearchBranch,
     };
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+    getProducts(params);
+  };
 
-    // data table popup
-    const columsPopup = [
-        {
-           title: 'STT',
-           dataIndex: 'index',
+  const getProducts = async (params = {}) => {
+    let data = await productAPI.getProductInstances(params);
+    data = data?.map((item, ind) => {
+      return {
+        ...item,
+        productName: item.product.productName,
+        id: ind + 1,
+        branchName: item?.branch?.branchName,
+        status: {
+          status: convertProductProcessType(item.status),
+          color: convertProcessTypeToColor(item.status),
         },
-        {
-            title: 'Action',
-            dataIndex: 'action',
-        },
-        {
-            title: 'From',
-            dataIndex: 'from',
-        },
-        {
-            title: 'To',
-            dataIndex: 'to',
-        },
-        {
-            title: 'date',
-            dataIndex: 'level',
-        },
+        producedDate: convertDate(item.producedDate),
+      };
+    });
+    setProducts(data);
+  };
+  useEffect(() => {
+    getProducts();
+  }, []);
 
-    ]
-
-    return (
-        <div className="">
-            <h2>Checking sản phẩm</h2>
-                <hr/>
-                <Form >
-                    <div className="row py-3">
-                    <div className="col-5 ">
-                        <h4>Nhập mã sản phẩm:</h4>
-                        <Input size="large" placeholder="Nhập từ khoá tìm kiếm sản phẩm...." />
-
-                    </div>
-                        <div className="col-2">
-                            <h4 className="lable-search">:</h4>
-                            <Select
-                                size = "large"
-                                defaultValue="Search theo tên"
-                                style={{
-                                    width: 200,
-                                }}
-                                onChange={handleChange}
-                                options={[
-                                    {
-                                        options: [
-                                            {
-                                                label: 'Search theo mã',
-                                                value: 'code',
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        options: [
-                                            {
-                                                label: 'Search theo tên',
-                                                value: 'name',
-                                            },
-                                        ],
-                                    },
-
-                                ]}
-                            />
-                        </div>
-                        <div className="col-2">
-                            <h4 className="lable-search">:</h4>
-                            <Select
-                                size = "large"
-                                defaultValue="distributors"
-                                style={{
-                                    width: 200,
-                                }}
-                                onChange={handleChange}
-                                options={[
-                                    {
-                                        options: [
-                                            {
-                                                label: 'Cơ sở sản xuất',
-                                                value: 'factories',
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        options: [
-                                            {
-                                                label: 'Trung tâm bảo hành',
-                                                value: 'warranty',
-                                            },
-                                        ],
-                                    },
-                                    {
-                                        options: [
-                                            {
-                                                label: 'Đại lý phân phối',
-                                                value: 'distributors',
-                                            },
-                                        ],
-                                    },
-                                ]}
-                            />
-                        </div>
-                    <div className="col-3 ">
-                        <h4 className="lable-search">:</h4>
-                        <Button  type="primary">Checking</Button>
-
-                    </div>
-
-                    </div>
-                </Form>
-            <hr/>
-            <Table columns={columns} dataSource={datas}/>
-            <Modal title="Checking" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-
-            </Modal>
-
-
+  return (
+    <div className="">
+      <h3 className="mt-3">Checking sản phẩm</h3>
+      <hr />
+      <Form>
+        <div className="row py-3">
+          <div className="col-5 ">
+            <h5>Nhập mã sản phẩm:</h5>
+            <Input
+              size="large"
+              placeholder="Nhập từ khoá tìm kiếm sản phẩm...."
+              value={keySearch}
+              onChange={(e) => {
+                setKeySearch(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleChecking();
+                }
+              }}
+            />
+          </div>
+          <div className="col-2">
+            <h4 className="lable-search">:</h4>
+            <Select
+              size="large"
+              defaultValue="productName"
+              style={{
+                width: 200,
+              }}
+              onChange={(value) => setTypeKeySearch(value)}
+              options={[
+                {
+                  label: "Tìm theo tên",
+                  value: "productName",
+                },
+                {
+                  label: "Tìm theo mã",
+                  value: "model",
+                },
+              ]}
+            />
+          </div>
+          <div className="col-2">
+            <h4 className="lable-search">:</h4>
+            <Select
+              size="large"
+              defaultValue="Tất cả"
+              style={{
+                width: 200,
+              }}
+              onChange={(value) => setTypeSearchBranch(value)}
+              options={[
+                {
+                  label: "Tất cả",
+                  value: "",
+                },
+                {
+                  label: "Cơ sở sản xuất",
+                  value: "FACTORY",
+                },
+                {
+                  label: "Trung tâm bảo hành",
+                  value: "WARRANTY_CENTER",
+                },
+                {
+                  label: "Đại lý phân phối",
+                  value: "DISTRIBUTOR",
+                },
+              ]}
+            />
+          </div>
+          <div className="col-3 ">
+            <h4 className="lable-search">:</h4>
+            <Button size="large" type="primary" onClick={handleChecking}>
+              Checking
+            </Button>
+          </div>
         </div>
-    );
-}
-export default CheckingProduct
+      </Form>
+      <hr />
+      <Table columns={columns} dataSource={products} />
+
+      <Modal
+        title="Checking"
+        open={isModalOpen}
+        width={600}
+        onOk={() => setIsModalOpen(false)}
+        onCancel={() => setIsModalOpen(false)}
+      >
+        <Table
+          columns={columnsPopup}
+          dataSource={productIsPicked}
+          pagination={{
+            pageSize: 4,
+          }}
+        />
+      </Modal>
+    </div>
+  );
+};
+export default CheckingProduct;

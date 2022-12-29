@@ -24,7 +24,6 @@ const ManageAccount = ({ notify }) => {
   };
   //end popup
   const onFinish = async (values) => {
-    console.log(selectedBrachId);
     if (!selectedBrachId) {
       notify("Vui long chon chi nhanh quan ly", "WARNING");
       return;
@@ -105,12 +104,16 @@ const ManageAccount = ({ notify }) => {
       <Modal
         title=" Thêm tài khoản"
         open={isModalOpen}
+        width={450}
         onOk={handleOk}
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: "none" } }}
         okButtonProps={{ style: { display: "none" } }}
       >
         <Form
+        style={{
+          paddingTop: 20
+        }}
           name="complex-form"
           onFinish={onFinish}
           labelCol={{
@@ -134,7 +137,7 @@ const ManageAccount = ({ notify }) => {
               >
                 <Input
                   style={{
-                    width: 160,
+                    width: '100%',
                   }}
                   placeholder="Nhập tên .... "
                 />
@@ -155,7 +158,7 @@ const ManageAccount = ({ notify }) => {
               >
                 <Input
                   style={{
-                    width: 160,
+                    width: "100%",
                   }}
                   placeholder="assword... "
                   type="password"
@@ -171,6 +174,9 @@ const ManageAccount = ({ notify }) => {
           >
             <Select
               showSearch
+              style={{
+                maxWidth: 200
+              }}
               placeholder="chọn cơ sở quản lý"
               optionFilterProp="children"
               filterOption={(input, option) =>
