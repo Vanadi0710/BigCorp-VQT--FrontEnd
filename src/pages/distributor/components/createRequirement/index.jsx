@@ -20,7 +20,7 @@ const CreateRequirement = () => {
                     items={[
                         {
                             label: `Tạo yêu cầu thu hồi`,
-                            key: 'recover',
+                            key: 'productError',
                             children: <CreateRecover/>,
                         },
                         {
