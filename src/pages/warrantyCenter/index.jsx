@@ -6,7 +6,7 @@ import {Outlet, useLocation} from "react-router-dom";
 import Sider from "antd/es/layout/Sider";
 
 const WarrantyCenter = () => {
-    const [currentRoute, setCurrentRoute] = useState('factories')
+    const [currentRoute, setCurrentRoute] = useState('warranty-center')
     return (
         <>
             <Header/>
