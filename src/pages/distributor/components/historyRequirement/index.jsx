@@ -1,127 +1,117 @@
-import React, {useState} from "react";
-import {Button, Modal, Table} from "antd";
+import React, { useState } from "react";
+import { Button, Modal, Table, Tag } from "antd";
+import { useEffect } from "react";
+import distributorAPI from "../../../../api/distributor.api";
+import {
+  convertDate,
+  convertStatusToColor,
+} from "../../../../utils/convertType";
+import { countProduct } from "../../../../utils/billDetail";
 
 const HistoryRequirement = () => {
-    //model open info đơn hàng
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-    const dataSource = [
-        {
-            key: '1',
-            code: 'ST1000',
-            nameProduct: 'E20',
-            date: '19/10/2001',
-            class: 'Bảo hành',
-            note: 'đã xác nhận'
+  //model open info đơn hàng
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [requests, setRequests] = useState([]);
+  const [detailModal, setDetailModal] = useState([])
 
-        },
-        {
-            key: '2',
-            code: 'ST1000',
-            nameProduct: 'E20',
-            date: '19/10/2001',
-            class: 'Thu hồi',
-            note: 'đã xác nhận'
-        },
-        {
-            key: '3',
-            code: 'ST1000',
-            nameProduct: 'E20',
-            class: 'Bảo hành',
-            date: '19/10/2001',
-            note: 'đã xác nhận'
-        }
+  const showModal = (products) => {
+    setIsModalOpen(true);
+    let detail = countProduct(products)
+    setDetailModal(detail)
+  };
 
-    ];
+  const columns = [
+    {
+      title: "Mã yêu cầu",
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: "Cơ sở yêu cầu",
+      dataIndex: "branchName",
+      key: "branchName",
+    },
+    {
+      title: "chi tiết đơn",
+      key: "info",
+      render: (transport) => <Button onClick={() => showModal(transport.products)}>Chi tiết</Button>,
+    },
+    {
+      title: "Ngày tạo",
+      dataIndex: "requestedDate",
+      key: "requestedDate",
+    },
+    {
+      title: "Loại yêu cầu",
+      dataIndex: "type",
+      key: "type",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: ({status, color}) => (
+        <Tag color={color}>{status}</Tag>
+      ),
+    },
+  ];
+  // data popup
+  const columnsModels = [
+    {
+      title: "Tên sản phẩm",
+      dataIndex: "productName",
+      key: "productName",
+    },
+    {
+      title: "Số lượng",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+  ];
 
-    const columns = [
-        {
-            title: 'Mã yêu cầu',
-            dataIndex: 'code',
-            key: 'code',
-        },
-        {
-            title: 'cơ sở yêu cầu',
-            dataIndex: 'nameProduct',
-            key: 'nameProduct',
-        },
-        {
-            title: 'chi tiết đơn',
-            dataIndex: 'info',
-            key: 'info',
-            render: () => <Button onClick={showModal}>Chi tiết</Button>
-        },
-        {
-            title: 'Ngày xác nhận ',
-            dataIndex: 'date',
-            key: 'date',
+  const getRequests = async () => {
+    let requests = await distributorAPI.getRequests();
+    requests = requests.map((req, ind) => {
+      return {
+        ...req,
+        status: { status: req.status, color: convertStatusToColor(req.status) },
+        branchName: req.to.branchName,
+        id: ind + 1,
+        requestedDate: convertDate(req.requestedDate),
+      };
+    });
+    setRequests(requests);
+  };
 
-        },
-        {
-            title: 'Loại yêu cầu',
-            dataIndex: 'class',
-            key: 'class',
-
-        },
-        {
-            title: 'Ghi  chú  ',
-            dataIndex: 'note',
-            key: 'note',
-
-        },
-
-    ];
-    // data popup
-    const columnsModels = [
-        {
-            title: 'Tên sản phẩm',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: 'Model  ',
-            dataIndex: 'model',
-            key: 'model',
-
-        },
-
-        {
-            title: 'Số lượng',
-            dataIndex: 'number',
-            key: 'number',
-        },
-    ];
-    const dataModels = [
-        {
-            key: '1',
-            name: 'Macbook',
-            model: 'MB1',
-            number: '3',
-
-        }
-    ];
-    return (
-        <div>
-            <div className="py-4">
-                <h3>Lịch sử yêu cầu</h3>
-                <hr/>
-            </div>
-            <div>
-                <Table dataSource={dataSource} columns={columns} />
-                <Modal title="Chi tiết đơn hàng" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                    <Table  columns={columnsModels} dataSource={dataModels} pagination={false}/>
-                </Modal>
-            </div>
-        </div>
-    );
-
-}
-export default HistoryRequirement
+  useEffect(() => {
+    getRequests();
+  }, []);
+  return (
+    <div>
+      <div className="py-4">
+        <h3>Lịch sử yêu cầu</h3>
+        <hr />
+      </div>
+      <div>
+        <Table dataSource={requests} columns={columns} />
+        <Modal
+          title="Chi tiết đơn hàng"
+          open={isModalOpen}
+          onOk={() => setIsModalOpen(false)}
+          onCancel={() => setIsModalOpen(false)}
+          cancelButtonProps={{ style: { display: "none" } }}
+          okButtonProps={{ style: { display: "none" } }}
+        >
+          <Table
+            columns={columnsModels}
+            dataSource={detailModal}
+            pagination={{
+                pageSize: 4
+            }}
+          />
+        </Modal>
+      </div>
+    </div>
+  );
+};
+export default HistoryRequirement;

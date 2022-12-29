@@ -75,7 +75,7 @@ const Router = ({ notify }) => {
         <Route path="cashier" element={<Cashier notify={notify}/>} />
         <Route path="history-cashier" element={<HistoryBuild />} />
         <Route path="handle" element={<Requirement />} />
-        <Route path="create-require" element={<CreateRequirement />} />
+        <Route path="create-require" element={<CreateRequirement notify={notify} />} />
         <Route path="store" element={<Store />} />
         <Route path="statistics-require" element={<StaticSalesDistributor />} />
         <Route path="analysis-product" element={<Analysis />} />
