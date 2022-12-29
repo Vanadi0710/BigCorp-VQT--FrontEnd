@@ -8,18 +8,20 @@ import { PAGE_SIZE } from "../../../../../constants";
 import distributorAPI from "../../../../../api/distributor.api";
 import { useSelector } from "react-redux";
 
-const CreateRequireFactory = ({ notify, createReq }) => {
+
+const RequestToWarrantyCenter = ({ notify }) => {
   const { account } = useSelector((state) => state.auth);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [devices, setDevices] = useState([]);
   const [selectedBrachId, setSelectedBranchId] = useState();
-  const [factories, setFactories] = useState([]);
+  const [WarrantyCenters, setWarrantyCenters] = useState([]);
 
   const onSelectChange = (newSelectedRowKeys) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
+  // trigger event when tick to the checkbox
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
@@ -76,20 +78,30 @@ const CreateRequireFactory = ({ notify, createReq }) => {
       key: "model",
     },
     {
-      title: "Ngày sản xuất",
-      dataIndex: "producedDate",
-      key: "producedDate",
+        title: "Khách hàng",
+        dataIndex: "customer",
+        key: "customer",
+      },
+    {
+      title: "Lý do lỗi",
+      dataIndex: "reasonFail",
+      key: "reasonFail",
+    },
+    {
+      title: "Ngày đi bảo hành",
+      dataIndex: "date",
+      key: "date",
     },
   ];
 
-  const getAllFactories = async () => {
-    let factories = await branchAPI.getBranches({ branchType: "FACTORY" });
-    setFactories(factories);
+  const getAllWarrantyCenters = async () => {
+    let warrantyCenters = await branchAPI.getBranches({ branchType: "WARRANTY_CENTER" });
+    setWarrantyCenters(warrantyCenters);
   };
 
   const handleCreateReq = async () => {
     let products = selectedRowKeys.map((item, index) => item.split("-")[1]);
-    let note = "import: ";
+    let note = "export: ";
     billDetail(selectedRowKeys).map((item, index) => {
       note += (index > 0 ? ", " : "") + item.productName + ": " + item.quantity;
     });
@@ -98,7 +110,7 @@ const CreateRequireFactory = ({ notify, createReq }) => {
         products,
         from: account.branch,
         to: selectedBrachId,
-        type: "IMPORT",
+        type: "EXPORT",
         note: note,
       });
       setSelectedRowKeys([]);
@@ -109,8 +121,8 @@ const CreateRequireFactory = ({ notify, createReq }) => {
     }
   };
 
-  const getDevices = async (branchId) => {
-    let devices = await productAPI.getInstancesByBranchId(branchId);
+  const getDevices = async (branch) => {
+    let devices = await productAPI.getInstancesByBranchId(branch);
     devices = devices?.map((device, index) => {
       return {
         ...device,
@@ -124,26 +136,29 @@ const CreateRequireFactory = ({ notify, createReq }) => {
   };
 
   useEffect(() => {
-    getAllFactories();
+    getAllWarrantyCenters();
   }, []);
   return (
     <div>
       <div className="ps-2">
-        <h4>Yêu cầu nhập hàng </h4>
+        <h4>Yêu cầu bảo hành sản phẩm lỗi </h4>
       </div>
       <hr />
 
       <Select
         className="py-2"
         showSearch
-        placeholder="chọn nhà máy sản xuất"
+        placeholder="Chọn trung tâm bảo hành"
         onChange={(value) => {
           setSelectedBranchId(value);
-          getDevices({ branchId: value, status: "IMPORTED_STORE" });
+
+
+          // TODO: determine status of product 
+          getDevices({ branchId: value, status: "" }); 
         }}
-        options={factories?.map((factory) => ({
-          value: factory._id,
-          label: factory.branchName,
+        options={WarrantyCenters?.map((warrantyCenter) => ({
+          value: warrantyCenter._id,
+          label: warrantyCenter.branchName,
         }))}
       />
 
@@ -168,4 +183,4 @@ const CreateRequireFactory = ({ notify, createReq }) => {
     </div>
   );
 };
-export default CreateRequireFactory;
+export default RequestToWarrantyCenter;

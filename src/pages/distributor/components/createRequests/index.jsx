@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
-import CreateRecover from "./components/createRecover";
-import WarrantyMent from "./components/warrantyment";
-import CreateRequireFactory from "./components/createFactory";
+import CreateRecover from "./components/requestSummon";
+import WarrantyMent from "./components/requestToWarratyCenter";
+import CreateRequireFactory from "./components/requestToFactory";
 
 const CreateRequirement = ({notify}) => {
   const onChange = (key) => {

@@ -1,7 +1,9 @@
 import {Button, Form, Input, List, Modal, Space, Table} from "antd";
 import {Tooltip} from "chart.js";
 import React, {useState} from "react";
-const CreateRecover= () => {
+
+
+const RequestSummon= () => {
     //table khách hàng
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const onSelectChange = (newSelectedRowKeys) => {
@@ -140,5 +142,5 @@ const CreateRecover= () => {
         </div>
     );
 }
-export default CreateRecover
+export default RequestSummon
 

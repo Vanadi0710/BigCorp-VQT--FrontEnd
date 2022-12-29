@@ -3,15 +3,15 @@ import { Input, Form, Select, Button, Tag, Table, Modal } from "antd";
 
 import React, { useState, useEffect } from "react";
 import "./style.scss";
-import productAPI from "../../../../api/product.api";
+import productAPI from "../../../../../api/product.api";
 import {
   convertDate,
   convertProductProcessType,
   convertProcessTypeToColor,
-} from "../../../../utils/convertType";
-import { PAGE_SIZE } from "../../../../constants";
+} from "../../../../../utils/convertType";
+import { PAGE_SIZE } from "../../../../../constants";
 
-const CheckingProduct = () => {
+const TrackingProduct = () => {
   const [products, setProducts] = useState([]);
   const [productIsPicked, setProductIsPicked] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -231,4 +231,4 @@ const CheckingProduct = () => {
     </div>
   );
 };
-export default CheckingProduct;
+export default TrackingProduct;

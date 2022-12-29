@@ -7,8 +7,8 @@ import WarrantyCenter from "../pages/warrantyCenter";
 import DistributorsAdmin from "../pages/admin/components/statistics/distributor";
 import FactoriesAdmin from "../pages/admin/components/statistics/factory";
 import WarrantyCenterAdmin from "../pages/admin/components/statistics/warrantyCenter";
-import CheckingProduct from "../pages/admin/components/checking";
-import StatisticProduct from "../pages/admin/components/static-product";
+import TrackingProduct from "../pages/admin/components/statsProduct/trackingProduct";
+import ProductChart from "../pages/admin/components/statsProduct/productChart";
 import Information from "../pages/admin/components/information";
 import Distributor from "../pages/distributor";
 import ManageProduct from "../pages/admin/components/management/manageProduct";
@@ -24,13 +24,13 @@ import InputStore from "../pages/factory/components/importStore";
 import Customer from "../pages/admin/components/management/manageCustomer";
 import History from "../pages/factory/components/history";
 import Cashier from "../pages/distributor/components/cashier";
-import HistoryBuild from "../pages/distributor/components/historyBuild";
+import HistoryTransaction from "../pages/distributor/components/historyTransaction";
 import Requirement from "../pages/distributor/components/requirement";
 import Analysis from "../pages/distributor/components/analysis";
 import FactoryStore from "../pages/factory/components/store";
 import { useSelector } from "react-redux";
 import HistoryRequirement from "../pages/distributor/components/historyRequirement";
-import CreateRequirement from "../pages/distributor/components/createRequirement";
+import CreateDistributorRequests from "../pages/distributor/components/createRequests";
 import FactoryStatistic from "../pages/factory/components/statistics";
 import FactoryChart from "../pages/admin/components/statistics/factory/factoryChart";
 import WarrantyCenterChart from "../pages/admin/components/statistics/warrantyCenter/warrantyCenterChart";
@@ -57,8 +57,8 @@ const Router = ({ notify }) => {
         </Route>
         <Route path="manage-product" element={<ManageProduct />} />
         <Route path="accounts" element={<ManageAccount notify={notify}/>} />
-        <Route path="checking-product" element={<CheckingProduct />} />
-        <Route path="statistics-product" element={<StatisticProduct />} />
+        <Route path="checking-product" element={<TrackingProduct />} />
+        <Route path="statistics-product" element={<ProductChart />} />
         <Route path="information" element={<Information />} />
       </Route>
 
@@ -73,9 +73,9 @@ const Router = ({ notify }) => {
 
       <Route path="/distributor" element={<Distributor />}>
         <Route path="cashier" element={<Cashier notify={notify}/>} />
-        <Route path="history-cashier" element={<HistoryBuild />} />
+        <Route path="history-cashier" element={<HistoryTransaction />} />
         <Route path="handle" element={<Requirement />} />
-        <Route path="create-require" element={<CreateRequirement notify={notify} />} />
+        <Route path="create-require" element={<CreateDistributorRequests notify={notify} />} />
         <Route path="store" element={<Store />} />
         <Route path="statistics-require" element={<StaticSalesDistributor />} />
         <Route path="analysis-product" element={<Analysis />} />
