@@ -1,45 +1,78 @@
-import { Button, Form, Input, List, Modal, Space } from "antd";
-import { Tooltip } from "chart.js";
+import { Button, Form, Input, List, Modal, Tag } from "antd";
 import { useState } from "react";
+import customerAPI from "../../../../api/customer.api";
+import distributorAPI from "../../../../api/distributor.api";
+import productAPI from "../../../../api/product.api";
+import castPrice from '../../../../utils/castPrice'
+import "./index.scss";
 
-const Cashier = () => {
-  //popup thêm khách hàng
+const Cashier = ({notify}) => {
+ 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
+  const [keySearchCustomer, setKeySearchCustomer] = useState("");
+  const [keySearchDevice, setKeySearchDevice] = useState("");
+  const [customers, setCustomers] = useState([]);
+  const [devices, setDevices] = useState([]);
+  const [customerTags, setCustomerTags] = useState([]);
+  const [deviceTags, setDeviceTags] = useState([]);
+
+  const onFinish = async (values) => {
+    try {
+      await customerAPI.addCustomer(values)
+      setIsModalOpen(false)
+      notify('Them khach hang moi thanh cong')
+    } catch (e) {
+      notify(e.response?.data, 'ERROR')
+    }
+ 
   };
-  const handleOk = () => {
-    setIsModalOpen(false);
+
+  const getCustomers = async (key) => {
+    let customers = await customerAPI.getCustomers({ code: key });
+    setCustomers(customers);
   };
-  const handleCancel = () => {
-    setIsModalOpen(false);
+
+  const getDevices = async (key) => {
+    let devices = await productAPI.getProductInstances({ model: key });
+    setDevices(devices);
   };
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+
+  const handleCloseCustomerTag = (tag) => {
+    let newTags = customerTags.filter((customerTag) => customerTag !== tag);
+    setCustomerTags(newTags);
   };
-  // end popup
-  const data = [
-    {
-      key: "1",
-      title: "Macbook pro",
-    },
-    {
-      key: "1",
-      title: "Macbook pro",
-    },
-    {
-      key: "1",
-      title: "Macbook pro",
-    },
-    {
-      key: "1",
-      title: "Macbook pro",
-    },
-    {
-      key: "1",
-      title: "Macbook pro",
-    },
-  ];
+
+  const handleCloseDeviceTag = (tag) => {
+    let newTags = deviceTags.filter(deviceTag => deviceTag.model !== tag.model);
+    setDeviceTags(newTags);
+  };
+
+  const handleAddNewDeviceTag = (tag) => {
+    let canAdd = true;
+    deviceTags.forEach((element) => {
+      if (element.model === tag.model) canAdd = false;
+    });
+    canAdd && setDeviceTags((prev) => [...prev, tag]);
+  };
+
+  const totalPrice = () => {
+    return deviceTags.reduce((total, deviceTag) => {
+      return total + deviceTag?.product?.price
+    }, 0)
+  }
+
+  const handleTransaction = async () => {
+    try {
+      await distributorAPI.sellProducts()
+      notify('Giao dich thanh cong')
+      setCustomerTags([])
+      setDeviceTags([])
+    } catch(e) {
+      console.log(e)
+      notify(e.response?.data, 'ERROR')
+    }
+  }
+
   return (
     <div>
       <div className="py-4">
@@ -47,18 +80,124 @@ const Cashier = () => {
       </div>
       <hr />
       <div className="row">
-        <div className="col-4">
+        <div className="col-4 search-box-cashier">
           <h5>Khách hàng</h5>
-          <Input className="my-2" placeholder="Nhập mã khách hàng...." />
-          <Button className="my-4" type="primary" onClick={showModal}>
+          <Input
+            className="my-2"
+            disabled={customerTags.length > 0 && true}
+            placeholder="Nhập mã khách hàng...."
+            value={keySearchCustomer}
+            onChange={(e) => {
+              setKeySearchCustomer(e.target.value);
+              getCustomers(e.target.value);
+            }}
+            onBlur={() => {
+              setTimeout(() => {
+                setCustomers([]);
+              }, 100);
+            }}
+          />
+          {customers.length > 0 && (
+            <div className="result-search-box-cashier">
+              <List
+                itemLayout="horizontal"
+                dataSource={customers}
+                renderItem={(item) => (
+                  <List.Item
+                    className="item"
+                    onClick={() => {
+                      setCustomerTags((prev) => [...prev, item.code]);
+                    }}
+                  >
+                    <List.Item.Meta
+                      title={item.fullName}
+                      description={item.code}
+                    />
+                    <div> {item.address} </div>
+                  </List.Item>
+                )}
+              />
+            </div>
+          )}
+          <div className="list-customer-tag">
+            {customerTags?.map((tag, ind) => {
+              return (
+                <Tag
+                  closable
+                  key={ind}
+                  onClose={(e) => {
+                    e.preventDefault();
+                    handleCloseCustomerTag(tag);
+                  }}
+                >
+                  {tag}
+                </Tag>
+              );
+            })}
+          </div>
+
+          <Button
+            className="my-4"
+            type="primary"
+            onClick={() => setIsModalOpen(true)}
+          >
             Tạo mã khách hàng
           </Button>
         </div>
-        <div className="col-5">
+        <div className="col-5 search-box-cashier">
           <h5>sản phẩm thanh toán</h5>
-          <Input className="my-2" placeholder="Nhập mã sản phẩm ...." />
+          <Input
+            className="my-2"
+            placeholder="Nhập mã sản phẩm ...."
+            value={keySearchDevice}
+            onChange={(e) => {
+              setKeySearchDevice(e.target.value);
+              getDevices(e.target.value);
+            }}
+            onBlur={() => {
+              setTimeout(() => {
+                setDevices([]);
+              }, 100);
+            }}
+          />
+          {devices.length > 0 && (
+            <div className="result-search-box-cashier">
+              <List
+                itemLayout="horizontal"
+                dataSource={devices}
+                renderItem={(item) => (
+                  <List.Item
+                    className="item"
+                    onClick={() => handleAddNewDeviceTag(item)}
+                  >
+                    <List.Item.Meta
+                      title={item?.model}
+                      description={item?.product?.productName}
+                    />
+                    <div>{castPrice(item?.product?.price)}vnd </div>
+                  </List.Item>
+                )}
+              />
+            </div>
+          )}
+          <div className="list-device-tag">
+            {deviceTags?.map((tag, ind) => {
+              return (
+                <Tag
+                  closable
+                  key={ind}
+                  onClose={(e) => {
+                    e.preventDefault();
+                    handleCloseDeviceTag(tag);
+                  }}
+                >
+                  {tag.model}
+                </Tag>
+              );
+            })}
+          </div>
           <div className="py-4">
-            <List
+            {/* <List
               itemLayout="horizontal"
               dataSource={data}
               renderItem={(item) => (
@@ -70,11 +209,13 @@ const Cashier = () => {
                   <div>x1 : 25.000.000 VND </div>
                 </List.Item>
               )}
-            />
+            /> */}
           </div>
           <hr />
-          <h5>Tổng tiền : 100.000.000 VND</h5>
-          <Button type="primary">Thanh toán</Button>
+          <h5>Tổng tiền : {castPrice(totalPrice())} VND</h5>
+          <Button type="primary"  
+          disabled={customerTags.length === 0 || deviceTags.length === 0}
+          onClick={handleTransaction}>Thanh toán</Button>
         </div>
       </div>
 
@@ -82,12 +223,16 @@ const Cashier = () => {
       <Modal
         title="Thêm mới khách hàng"
         open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        width={500}
+        onOk={() => setIsModalOpen(false)}
+        onCancel={() => setIsModalOpen(false)}
         cancelButtonProps={{ style: { display: "none" } }}
         okButtonProps={{ style: { display: "none" } }}
       >
         <Form
+          style={{
+            paddingTop: 15,
+          }}
           name="complex-form"
           onFinish={onFinish}
           labelCol={{
@@ -97,14 +242,14 @@ const Cashier = () => {
             span: 16,
           }}
         >
-            <Form.Item
+          <Form.Item
             label="Tên khách hàng"
             style={{
               marginBottom: 0,
             }}
           >
             <Form.Item
-              name="customerName"
+              name="fullName"
               rules={[
                 {
                   required: true,
@@ -113,7 +258,7 @@ const Cashier = () => {
               ]}
               style={{
                 display: "inline-block",
-                width: "80%",
+                width: "90%",
               }}
             >
               <Input placeholder="Nhập tên khách hàng" />
@@ -135,13 +280,12 @@ const Cashier = () => {
               ]}
               style={{
                 display: "inline-block",
-                width: "80%",
+                width: "90%",
               }}
             >
               <Input placeholder="Nhập dịa chỉ" />
             </Form.Item>
           </Form.Item>
-
 
           <Form.Item
             label="Số điện thoại"
@@ -150,7 +294,7 @@ const Cashier = () => {
             }}
           >
             <Form.Item
-              name="phoneNumber"
+              name="phone"
               rules={[
                 {
                   required: true,
@@ -159,7 +303,7 @@ const Cashier = () => {
               ]}
               style={{
                 display: "inline-block",
-                width: "80%",
+                width: "90%",
               }}
             >
               <Input placeholder="Nhập số điện thoại" />
