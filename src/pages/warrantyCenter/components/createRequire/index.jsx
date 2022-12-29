@@ -1,6 +1,9 @@
 import {Tabs} from "antd";
-import Recover from "./recover";
-import ResponseProduct from "./responseProduct";
+import ProductError from "./productError";
+import ResponseProduct from "./productDoWarraty";
+import ProductDoWarraty from "./productDoWarraty";
+import ProductFixed from "./productFixed";
+import NotFixed from "./notFixed";
 
 const CreateRequire = () => {
     const onChange = (key) => {
@@ -18,15 +21,26 @@ const CreateRequire = () => {
                 size="large"
                 items={[
                     {
-                        label: `Tạo yêu cầu bảo hành xong`,
-                        key: 'response',
-                        children: <ResponseProduct/>,
+                        label: `Sản  phẩm lỗi`,
+                        key: 'ProductError',
+                        children: <ProductError/>,
                     },
                     {
-                        label: `Tạo yêu cầu thu hồi `,
-                        key: 'recover',
-                        children: <Recover/>,
+                        label: `Sản phẩm đang bảo hành `,
+                        key: 'ProductDoWarraty',
+                        children: <ProductDoWarraty/>,
                     },
+                    {
+                        label: `Sản phẩm đã xửa xong`,
+                        key: 'ProductFixed',
+                        children: <ProductFixed/>,
+
+                    },
+                    {
+                        label: `Sản phẩm không thể xửa`,
+                        key: 'NotFixed',
+                        children: <NotFixed/>,
+                    }
 
                 ]}
                 />

@@ -95,7 +95,7 @@ const DistributorsAdmin = () => {
       {!branchId && (
         <>
           <div>
-            <h3 className="py-3">Danh sách / đại lý phân phối</h3>
+            <h3 className="py-3">Danh sách / nhà máy sản xuất</h3>
             <hr />
             <div className="row">
               <div className="col-2">
