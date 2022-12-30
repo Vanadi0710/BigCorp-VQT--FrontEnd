@@ -13,9 +13,11 @@ function getItem(label, key, icon, children, type) {
     };
 }
 const items = [
+    getItem("Hoạt động", "sb", <UnorderedListOutlined />, [
+        getItem("Xử lý sản phẩm lỗi", "activity"),
+    ]),
     getItem("Yêu cầu", "sub1", <UnorderedListOutlined />, [
-        getItem("Xử lý yêu cầu", "import-product"),
-        getItem("Tạo yêu cầu", "create-require"),
+        getItem("Xử lý yêu cầu", "handle-requests"),
         getItem("Lịch sử yêu cầu", "history-requirement"),
     ]),
 

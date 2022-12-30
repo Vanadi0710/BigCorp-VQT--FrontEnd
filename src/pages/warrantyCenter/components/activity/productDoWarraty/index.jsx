@@ -1,15 +1,20 @@
-import { Button, Modal, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Modal, Select, Table } from "antd";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import productAPI from "../../../../../api/product.api";
 import warrantyCenterAPI from "../../../../../api/warrantyCenter.api";
+import { PAGE_SIZE } from "../../../../../constants";
 import { billDetail } from "../../../../../utils/billDetail";
+import { convertDate } from "../../../../../utils/convertType";
 import DataModal from "../modal";
 
-const ProductDoWarranty = ({notify}) => {
- 
+const ProductError = ({ notify }) => {
+  //model open info đơn hàng
+  const {account} = useSelector(state => state.auth)
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [devices, setDevices] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -18,7 +23,7 @@ const ProductDoWarranty = ({notify}) => {
   const columns = [
     {
       title: "id",
-      dataIndex: 'id'
+      dataIndex: "id",
     },
     {
       title: "Mã sản phẩm",
@@ -29,15 +34,11 @@ const ProductDoWarranty = ({notify}) => {
       dataIndex: "productName",
     },
     {
-      title: "Ngày đưa vào sửa",
-      dataIndex: "date",
+      title: "Ngày chuyển tới",
+      dataIndex: "updatedAt",
     },
     {
-      title: 'Lỗi',
-      dataIndex: 'reasonFail'
-    },
-    {
-      title: "Chi tiết ",
+      title: "Chi tiết",
       render: () => (
         <Button type="primary" onClick={showModal}>
           chi tiết
@@ -45,40 +46,8 @@ const ProductDoWarranty = ({notify}) => {
       ),
     },
   ];
-  const data = [
-    {
-      key: "1",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
-    },
-    {
-      key: "2",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
-    },
-    {
-      key: "3",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
-    },
-    {
-      key: "4",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
-    },
-  ];
 
-  
   const onSelectChange = (newSelectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const rowSelection = {
@@ -119,38 +88,28 @@ const ProductDoWarranty = ({notify}) => {
     ],
   };
 
-  const handleFixDone = async () => {
+  const handleWarrantyProducts = async (status) => {
     let products = selectedRowKeys.map((item, index) => item.split("-")[1]);
     try {
-      await warrantyCenterAPI.warrantyProducts({ products });
+      await warrantyCenterAPI.warrantyProducts({ products, status });
       setSelectedRowKeys([]);
-      notify("Thao tác thành công sửa chữa");
+      getDevices()
+      notify("Thao tac thanh cong");
     } catch (e) {
       console.log(e);
       notify(e.response?.data, "ERROR");
     }
-  }
+  };
 
-  const handleCannotFix = async () => {
-    let products = selectedRowKeys.map((item, index) => item.split("-")[1]);
-    try {
-      await warrantyCenterAPI.warrantyProducts({ products });
-      setSelectedRowKeys([]);
-      notify("Thao tác thành công sửa chữa");
-    } catch (e) {
-      console.log(e);
-      notify(e.response?.data, "ERROR");
-    }
-  }
-
-  const getDevices = async (branchId) => {
-    let devices = await productAPI.getInstancesByBranchId({branchId, status: ''});
+  const getDevices = async () => {
+    let devices = await productAPI.getInstancesByBranchId({branchId: account.branch, status: 'UNDER_WARRANTY'});
     devices = devices?.map((device, index) => {
       return {
         ...device,
         productName: device?.product?.productName,
         key: index + "-" + device._id + "-" + device?.product?.productName,
         id: index + 1,
+        updatedAt: convertDate(device.updatedAt)
       };
     });
     setDevices(devices);
@@ -161,7 +120,7 @@ const ProductDoWarranty = ({notify}) => {
   }, []);
   return (
     <div>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <Table rowSelection={rowSelection} columns={columns} dataSource={devices} pagination={{ pageSize: PAGE_SIZE }} />
       <hr />
       <h4>sản phẩm đã chọn: </h4>
       {billDetail(selectedRowKeys).map((item, index) => (
@@ -169,20 +128,16 @@ const ProductDoWarranty = ({notify}) => {
           {item.productName}: {item.quantity}
         </p>
       ))}
-      <div className="row">
-        <div className="col-2">
-          <Button type="primary">Bảo hành</Button>
-        </div>
-        <div className="col-2">
-          <Button type="primary" danger>
-            Không bảo hành được
-          </Button>
-        </div>
-      </div>
+      <Button type="primary" onClick={() => handleWarrantyProducts('WARRANTY_DONE')}>
+      Hoàn tất sửa
+      </Button>
+      <Button className="ms-5" type="primary" onClick={() => handleWarrantyProducts('FAILED_NEED_TO_FACTORY')} danger>
+      Không thể sửa
+      </Button>
       <Modal title="Chi tiết bảo hành" open={isModalOpen} onOk={() => setIsModalOpen(false)} onCancel={() => setIsModalOpen(false)}>
         <DataModal />
       </Modal>
     </div>
   );
 };
-export default ProductDoWarranty;
+export default ProductError;

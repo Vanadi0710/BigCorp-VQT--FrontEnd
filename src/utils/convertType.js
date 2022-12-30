@@ -101,3 +101,53 @@ export function convertRoleType(roleType) {
 export function convertDate(date) {
   return Moment(date).format("DD-MM-YYYY");
 }
+
+export function convertTransportType(transportType) {
+  switch (transportType) {
+    case "TAKE_TO_DISTRIBUTOR_BY_FACTORY":
+      return "xuất cho đại lý";
+    case "TAKE_TO_DISTRIBUTOR_BY_WARRANTY_CENTER":
+      return "xuất cho đại lý";
+    case "FAILED_NEED_TO_WARRANTY":
+      return "cần bảo hành";
+    case "FAILED_SENT_TO_FACTORY":
+      return "lỗi xuất cho nhà máy";
+    case "RETURNED_TO_FACTORY":
+      return "trả về nhà máy";
+    default:
+      return transportType;
+  }
+}
+
+export function convertProductStatusType(status) {
+  switch (status) {
+    case "NEWLY_PRODUCED":
+      return "mới sản xuất";
+    case "IMPORTED_STORE":
+      return "mới nhập vào kho";
+    case "TAKE_TO_DISTRIBUTOR_BY_FACTORY":
+      return "nhập từ nhà máy";
+    case "TAKE_TO_DISTRIBUTOR_BY_WARRANTY_CENTER":
+      return "nhận lại từ trung tâm";
+    case "SOLD":
+      return "đã bán";
+    case "FAILED_NEED_TO_WARRANTY_CENTER":
+      return "lỗi cần bảo hành";
+    case "UNDER_WARRANTY":
+      return "đang bảo hành";
+    case "WARRANTY_DONE":
+      return "đã bảo hành xong";
+    case "WARRANTY_RETURNED_TO_CUSTOMER":
+      return "đã trả lại cho khách";
+    case "FAILED_NEED_TO_FACTORY":
+      return "lỗi không thể sửa";
+    case "FAILED_SENT_TO_FACTORY":
+      return "lỗi";
+    case "FAILED_NEED_TO_SUMMON":
+      return "bị thu hồi để sửa";
+    case "RETURNED_TO_FACTORY":
+      return "không bán được";
+    default:
+      return status;
+  }
+}

@@ -5,6 +5,7 @@ import branchAPI from "../../../../../api/branch.api";
 import productAPI from "../../../../../api/product.api";
 import warrantyCenterAPI from "../../../../../api/warrantyCenter.api";
 import { billDetail } from "../../../../../utils/billDetail";
+import { convertDate } from "../../../../../utils/convertType";
 import DataModal from "../modal";
 
 const ProductFixed = ({ notify }) => {
@@ -25,23 +26,15 @@ const ProductFixed = ({ notify }) => {
     },
     {
       title: "Mã sản phẩm",
-      dataIndex: "code",
+      dataIndex: "model",
     },
     {
       title: "Tên sản phẩm",
       dataIndex: "productName",
     },
     {
-      title: "Ngày chuyển tới",
-      dataIndex: "date",
-    },
-    {
       title: "Ngày bảo hành xong",
-      dataIndex: "dateFixed",
-    },
-    {
-      title: "Cơ sở chuyển tới",
-      dataIndex: "branch",
+      dataIndex: "updatedAt",
     },
     {
       title: "Chi tiết ",
@@ -50,36 +43,6 @@ const ProductFixed = ({ notify }) => {
           chi tiết
         </Button>
       ),
-    },
-  ];
-  const data = [
-    {
-      key: "1",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
-    },
-    {
-      key: "2",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
-    },
-    {
-      key: "3",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
-    },
-    {
-      key: "4",
-      code: "mb1",
-      name: "Macbook",
-      date: "19/10/2001",
-      distributor: "E20",
     },
   ];
 
@@ -129,21 +92,23 @@ const ProductFixed = ({ notify }) => {
     setDistributors(distributors);
   };
 
-  const handleTransportToDistributor = async () => {
+  const handleTransportToFactory = async () => {
+    console.log(selectedBrachId)
     let products = selectedRowKeys.map((item, index) => item.split("-")[1]);
     let note = "import: ";
     billDetail(selectedRowKeys).map((item, index) => {
       note += (index > 0 ? ", " : "") + item.productName + ": " + item.quantity;
     });
     try {
-      await warrantyCenterAPI.requestImportProducts({
+      await warrantyCenterAPI.reqSendFailedToFactory({
         products,
         from: account.branch,
         to: selectedBrachId,
-        type: "IMPORT",
+        type: "FAILED_SENT_TO_FACTORY",
         note: note,
       });
       setSelectedRowKeys([]);
+      getDevices()
       notify("Tao yeu cau thanh cong");
     } catch (e) {
       console.log(e);
@@ -151,12 +116,13 @@ const ProductFixed = ({ notify }) => {
     }
   };
 
-  const getDevices = async (branchId) => {
-    let devices = await productAPI.getInstancesByBranchId({ branchId, status: "" });
+  const getDevices = async () => {
+    let devices = await productAPI.getInstancesByBranchId({ branchId: account.branch, status: "FAILED_NEED_TO_FACTORY" });
     devices = devices?.map((device, index) => {
       return {
         ...device,
         productName: device?.product?.productName,
+        updatedAt: convertDate(device.updatedAt),
         key: index + "-" + device._id + "-" + device?.product?.productName,
         id: index + 1,
       };
@@ -170,9 +136,14 @@ const ProductFixed = ({ notify }) => {
   }, []);
   return (
     <div>
-      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+      <Table rowSelection={rowSelection} columns={columns} dataSource={devices} />
       <hr />
       <h4>sản phẩm đã chọn: </h4>
+      {billDetail(selectedRowKeys).map((item, index) => (
+        <p key={index} className="ps-3">
+          {item.productName}: {item.quantity}
+        </p>
+      ))}
       <div className="row py-3">
         <div className="col-2">
           <Select
@@ -180,18 +151,18 @@ const ProductFixed = ({ notify }) => {
             style={{
               width: 200,
             }}
-            onChange={(value) => {
+            onChange={({value}) => {
               setSelectedBranchId(value);
             }}
-            options={distributors?.map((factory) => ({
-              value: factory._id,
-              label: factory.branchName,
+            options={distributors?.map((distributor) => ({
+              value: distributor._id,
+              label: distributor.branchName,
             }))}
             placeholder="chọn đại lý trả hàng"
           />
         </div>
         <div className="col-2">
-          <Button type="primary" onClick={handleTransportToDistributor}>
+          <Button type="primary" onClick={handleTransportToFactory} disabled={!selectedBrachId}>
             Gửi trả hàng
           </Button>
         </div>

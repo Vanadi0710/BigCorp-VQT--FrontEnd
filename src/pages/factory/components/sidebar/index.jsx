@@ -23,12 +23,13 @@ const items = [
     getItem("Nhập vào kho ", "input-store"),
   ]),
   getItem("Yêu cầu", "sub2", <UnorderedListOutlined />, [
-    getItem("Xử lý yêu cầu ", "list-require"),
-    getItem("Lịch sử yêu cầu", "history"),
+    getItem("Xử lý yêu cầu ", "handle-requests"),
+    getItem("Lịch sử yêu cầu", "all-requests"),
   ]),
-
+  "TAKE_TO_PRODUCT_BY_FACTORY",
+  "TAKE_TO_PRODUCT_BY_WARRANTY_CENTER",
   getItem("Thống kê  ", "sub3", <UnorderedListOutlined />, [
-    getItem("Kho", "factories-store"),
+    getItem("Kho", "store"),
     getItem("Thống kê", "statistic"),
   ]),
 ];

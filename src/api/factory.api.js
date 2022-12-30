@@ -12,10 +12,30 @@ const getDevices = async (tempStore = false, status) => {
     return (await AxiosAuth.get(`/factory/products/instances?tempStore=${tempStore}&status=${status}`)).data
 }
 
+const getRequests = async (status, to) => {
+    return (await AxiosAuth.get('/transports', {
+        params: {
+            status,
+            to
+        }
+    })).data
+}
+
+const getReqNeedApprove = async () => {
+    return (await AxiosAuth.get('/transports/need-approve')).data
+}
+
+const handleRequest = async ({transportId, status}) => {
+    return (await AxiosAuth.post('/factory/orders/handle', {transportId, status} ))
+}
+
 const factoryAPI = {
    produceProducts,
    importToStore,
-   getDevices
+   getDevices,
+   getRequests,
+   handleRequest,
+   getReqNeedApprove
 }
 
 export default factoryAPI

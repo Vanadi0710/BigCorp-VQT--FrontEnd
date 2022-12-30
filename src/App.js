@@ -7,7 +7,7 @@ function App() {
   const notify = (msg, type = "SUCCESS") => {
     toast.success(msg, { type: toast.TYPE[type] });
   };
-
+ 
   return (
     <BrowserRouter>
       <ToastContainer />

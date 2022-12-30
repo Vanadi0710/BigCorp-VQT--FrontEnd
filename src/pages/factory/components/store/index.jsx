@@ -2,26 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Divider, Image, Radio, Select, Table } from "antd";
 import Search from "antd/es/input/Search";
 import factoryAPI from "../../../../api/factory.api";
-import { convertDate } from "../../../../utils/convertType";
+import { convertDate, convertProductStatusType } from "../../../../utils/convertType";
 import Store from "../../../../components/store";
 
 const FactoryStore = () => {
   const [products, setProducts] = useState([]);
   const onSearch = (value) => console.log(value);
   const handleDropdownChange = ({value}) => {
-    console.log(value)
      getProducts(value)
   };
 
   const getProducts = async (status = 'IMPORTED_STORE') => {
     let products = await factoryAPI.getDevices(false, status);
-    products = products.map((product, index) => {
+    products = products?.map((product, index) => {
       return {
         ...product,
         productName: product.product?.productName,
         producedDate: convertDate(product.producedDate),
         key: index + "-" + product._id + "-" + product?.product?.productName,
         id: index + 1,
+        status: convertProductStatusType(product.status)
       };
     });
     setProducts(products);
@@ -42,7 +42,7 @@ const FactoryStore = () => {
           <Select
             labelInValue
             defaultValue={{
-              value: "IN_STOCK",
+              value: "IMPORTED_STORE",
               label: "Đã nhập",
             }}
             style={{
@@ -51,11 +51,11 @@ const FactoryStore = () => {
             onChange={handleDropdownChange}
             options={[
               {
-                value: "IN_STOCK",
+                value: "IMPORTED_STORE",
                 label: "Đã nhập",
               },
               {
-                value: "FAILED",
+                value: 'FAILED_SENT_TO_FACTORY',
                 label: "Sản phẩm lỗi ",
               },
             ]}

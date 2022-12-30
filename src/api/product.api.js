@@ -4,19 +4,14 @@ const getProducts = async () => {
   return (await AxiosAuth.get("/product-lines/products")).data;
 };
 
-const getProductInstances = async (params) => {
-  return (
-    await AxiosAuth.get("/product-lines/products/product/instances", {
-      params,
-    })
-  ).data;
-};
-
-const getInstancesByBranchId = async ({ branchId, status }) => {
+const getInstancesByBranchId = async ({ branchId, status = '', model = ''}) => {
   return (await AxiosAuth.get(
     `/product-lines/products/instances/branch/${branchId}`,
     {
-      status: status,
+      params: {
+        status,
+        model
+      }
     }
   )).data;
 };
@@ -36,7 +31,6 @@ const getProduct = async (productId) => {
 const productAPI = {
   getProducts,
   getProduct,
-  getProductInstances,
   getProductInstance,
   getInstancesByBranchId,
 };

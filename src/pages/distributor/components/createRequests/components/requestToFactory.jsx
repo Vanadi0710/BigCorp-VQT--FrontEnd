@@ -98,7 +98,7 @@ const RequestToFactory = ({ notify, createReq }) => {
         products,
         from: account.branch,
         to: selectedBrachId,
-        type: "IMPORT",
+        type: "TAKE_TO_DISTRIBUTOR_BY_FACTORY",
         note: note,
       });
       setSelectedRowKeys([]);

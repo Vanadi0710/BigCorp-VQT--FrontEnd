@@ -8,7 +8,6 @@ import { PAGE_SIZE } from "../../../../../constants";
 import distributorAPI from "../../../../../api/distributor.api";
 import { useSelector } from "react-redux";
 
-
 const RequestToWarrantyCenter = ({ notify }) => {
   const { account } = useSelector((state) => state.auth);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -65,37 +64,33 @@ const RequestToWarrantyCenter = ({ notify }) => {
     {
       title: "id",
       dataIndex: "id",
-      key: "id",
     },
     {
       title: "Tên sản phẩm",
       dataIndex: "productName",
-      key: "productName",
     },
     {
       title: "Model ",
       dataIndex: "model",
-      key: "model",
     },
     {
-        title: "Khách hàng",
-        dataIndex: "customer",
-        key: "customer",
-      },
+      title: "Khách hàng",
+      dataIndex: "customer",
+    },
     {
       title: "Lý do lỗi",
       dataIndex: "reasonFail",
-      key: "reasonFail",
     },
     {
       title: "Ngày đi bảo hành",
       dataIndex: "date",
-      key: "date",
     },
   ];
 
   const getAllWarrantyCenters = async () => {
-    let warrantyCenters = await branchAPI.getBranches({ branchType: "WARRANTY_CENTER" });
+    let warrantyCenters = await branchAPI.getBranches({
+      branchType: "WARRANTY_CENTER",
+    });
     setWarrantyCenters(warrantyCenters);
   };
 
@@ -106,11 +101,11 @@ const RequestToWarrantyCenter = ({ notify }) => {
       note += (index > 0 ? ", " : "") + item.productName + ": " + item.quantity;
     });
     try {
-      await distributorAPI.requestImportProducts({
+      await distributorAPI.reqSendFailedToWarranty({
         products,
         from: account.branch,
         to: selectedBrachId,
-        type: "EXPORT",
+        type: "TAKE_FAILED_TO_WARRANTY_CENTER",
         note: note,
       });
       setSelectedRowKeys([]);
@@ -137,7 +132,9 @@ const RequestToWarrantyCenter = ({ notify }) => {
 
   useEffect(() => {
     getAllWarrantyCenters();
+    getDevices({branchId: account.branch, status: ['FAILED_NEED_TO_WARRANTY', 'FAILED_NEED_TO_SUMMON']})
   }, []);
+
   return (
     <div>
       <div className="ps-2">
@@ -152,9 +149,8 @@ const RequestToWarrantyCenter = ({ notify }) => {
         onChange={(value) => {
           setSelectedBranchId(value);
 
-
-          // TODO: determine status of product 
-          getDevices({ branchId: value, status: "" }); 
+          // TODO: determine status of product
+          getDevices({ branchId: value, status: "" });
         }}
         options={WarrantyCenters?.map((warrantyCenter) => ({
           value: warrantyCenter._id,
@@ -177,7 +173,11 @@ const RequestToWarrantyCenter = ({ notify }) => {
           {item.productName}: {item.quantity}
         </p>
       ))}
-      <Button type="primary" disabled={selectedRowKeys.length === 0} onClick={handleCreateReq}>
+      <Button
+        type="primary"
+        disabled={selectedRowKeys.length === 0}
+        onClick={handleCreateReq}
+      >
         Xác nhận yêu cầu
       </Button>
     </div>

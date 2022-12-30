@@ -1,13 +1,14 @@
 import { Button, Form, Input, List, Modal, Tag } from "antd";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import customerAPI from "../../../../api/customer.api";
 import distributorAPI from "../../../../api/distributor.api";
 import productAPI from "../../../../api/product.api";
-import castPrice from '../../../../utils/castPrice'
+import castPrice from "../../../../utils/castPrice";
 import "./index.scss";
 
-const Cashier = ({notify}) => {
- 
+const Cashier = ({ notify }) => {
+  const { account } = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [keySearchCustomer, setKeySearchCustomer] = useState("");
   const [keySearchDevice, setKeySearchDevice] = useState("");
@@ -18,13 +19,12 @@ const Cashier = ({notify}) => {
 
   const onFinish = async (values) => {
     try {
-      await customerAPI.addCustomer(values)
-      setIsModalOpen(false)
-      notify('Them khach hang moi thanh cong')
+      await customerAPI.addCustomer(values);
+      setIsModalOpen(false);
+      notify("Them khach hang moi thanh cong");
     } catch (e) {
-      notify(e.response?.data, 'ERROR')
+      notify(e.response?.data, "ERROR");
     }
- 
   };
 
   const getCustomers = async (key) => {
@@ -32,8 +32,15 @@ const Cashier = ({notify}) => {
     setCustomers(customers);
   };
 
-  const getDevices = async (key) => {
-    let devices = await productAPI.getProductInstances({ model: key });
+  const getDevices = async (model) => {
+    let devices = await productAPI.getInstancesByBranchId({
+      branchId: account.branch,
+      status: [
+        "TAKE_TO_DISTRIBUTOR_BY_FACTORY",
+        "TAKE_TO_DISTRIBUTOR_BY_WARRANTY_CENTER",
+      ],
+      model
+    });
     setDevices(devices);
   };
 
@@ -43,7 +50,9 @@ const Cashier = ({notify}) => {
   };
 
   const handleCloseDeviceTag = (tag) => {
-    let newTags = deviceTags.filter(deviceTag => deviceTag.model !== tag.model);
+    let newTags = deviceTags.filter(
+      (deviceTag) => deviceTag.model !== tag.model
+    );
     setDeviceTags(newTags);
   };
 
@@ -57,21 +66,24 @@ const Cashier = ({notify}) => {
 
   const totalPrice = () => {
     return deviceTags.reduce((total, deviceTag) => {
-      return total + deviceTag?.product?.price
-    }, 0)
-  }
+      return total + deviceTag?.product?.price;
+    }, 0);
+  };
 
   const handleTransaction = async () => {
+  
+    let products = deviceTags.map(device => device._id)
+    console.log(customerTags[0], products)
     try {
-      await distributorAPI.sellProducts()
-      notify('Giao dich thanh cong')
-      setCustomerTags([])
-      setDeviceTags([])
-    } catch(e) {
-      console.log(e)
-      notify(e.response?.data, 'ERROR')
+      await distributorAPI.sellProducts({products, customerTag: customerTags[0]});
+      notify("Giao dich thanh cong");
+      setCustomerTags([]);
+      setDeviceTags([]);
+    } catch (e) {
+      console.log(e);
+      notify(e.response?.data, "ERROR");
     }
-  }
+  };
 
   return (
     <div>
@@ -213,9 +225,13 @@ const Cashier = ({notify}) => {
           </div>
           <hr />
           <h5>Tổng tiền : {castPrice(totalPrice())} VND</h5>
-          <Button type="primary"  
-          disabled={customerTags.length === 0 || deviceTags.length === 0}
-          onClick={handleTransaction}>Thanh toán</Button>
+          <Button
+            type="primary"
+            disabled={customerTags.length === 0 || deviceTags.length === 0}
+            onClick={handleTransaction}
+          >
+            Thanh toán
+          </Button>
         </div>
       </div>
 

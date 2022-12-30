@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Modal, Table, Tag } from "antd";
 import { useEffect } from "react";
-import distributorAPI from "../../../../api/distributor.api";
+import warrantyCenterAPI from "../../../../api/warrantyCenter.api";
 import {
   convertDate,
   convertStatusToColor,
@@ -9,7 +9,7 @@ import {
 } from "../../../../utils/convertType";
 import { countProduct } from "../../../../utils/billDetail";
 
-const HistoryRequirement = () => {
+const HistoryReqWarranty = () => {
   //model open info đơn hàng
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [requests, setRequests] = useState([]);
@@ -75,7 +75,7 @@ const HistoryRequirement = () => {
   ];
 
   const getRequests = async () => {
-    let requests = await distributorAPI.getRequests();
+    let requests = await warrantyCenterAPI.getRequests();
     requests = requests.map((req, ind) => {
       return {
         ...req,
@@ -120,4 +120,4 @@ const HistoryRequirement = () => {
     </div>
   );
 };
-export default HistoryRequirement;
+export default HistoryReqWarranty;
