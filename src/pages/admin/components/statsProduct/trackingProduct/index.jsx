@@ -139,7 +139,6 @@ const TrackingProduct = () => {
           <div className="col-5 ">
             <h5>Nhập mã sản phẩm:</h5>
             <Input
-              size="large"
               placeholder="Nhập từ khoá tìm kiếm sản phẩm...."
               value={keySearch}
               onChange={(e) => {
@@ -155,7 +154,7 @@ const TrackingProduct = () => {
           <div className="col-2">
             <h4 className="lable-search">:</h4>
             <Select
-              size="large"
+                className="select_term"
               defaultValue="productName"
               style={{
                 width: 200,
@@ -176,7 +175,7 @@ const TrackingProduct = () => {
           <div className="col-2">
             <h4 className="lable-search">:</h4>
             <Select
-              size="large"
+              className="select_factoty"
               defaultValue="Tất cả"
               style={{
                 width: 200,
@@ -204,7 +203,7 @@ const TrackingProduct = () => {
           </div>
           <div className="col-3 ">
             <h4 className="lable-search">:</h4>
-            <Button size="large" type="primary" onClick={handleChecking}>
+            <Button  className="btn-checking" type="primary" onClick={handleChecking}>
               Checking
             </Button>
           </div>

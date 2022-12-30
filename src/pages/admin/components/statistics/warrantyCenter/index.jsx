@@ -5,6 +5,7 @@ import Search from "antd/es/input/Search";
 import { Link, Outlet, useParams } from "react-router-dom";
 import branchAPI from "../../../../../api/branch.api";
 import ModalAdd from "../modalAdd/modalAdd";
+import '../factory/index.css';
 
 const DistributorsAdmin = () => {
   const columns = [
@@ -109,6 +110,7 @@ const DistributorsAdmin = () => {
               </Modal>
               <div className="col-2">
                 <Select
+                    className="add_factory "
                   defaultValue=""
                   style={{
                     width: 200,
@@ -128,6 +130,7 @@ const DistributorsAdmin = () => {
               </div>
               <div className="col-5">
                 <Search
+                    className="add_factory "
                   placeholder="Nhập từ khoá tìm kiếm ....."
                   allowClear
                   enterButton="Search"
