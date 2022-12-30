@@ -1,5 +1,6 @@
 @media screen and (max-width:600px){
-    .menu {
-        /*display: none;*/
+    .add_factory {
+        display: none;
     }
+
 }

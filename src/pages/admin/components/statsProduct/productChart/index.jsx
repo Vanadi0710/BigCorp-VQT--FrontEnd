@@ -5,6 +5,7 @@ import StatsChart from "../../../../../components/chart";
 import { acerProducts, appleProducts, brandTypes, chartColumnColor, dellProducts, lenovoProducts, msiProducts } from "../../../../../constants";
 import { Form, Table, Tag, Select } from "antd";
 import { STATS_MONTHLY, STATS_YEARLY, STATS_QUARTERLY } from "../../../../../constants/index";
+import './index.css';
 
 const ProductChart = () => {
   const [data, setData] = useState([]);
@@ -81,8 +82,8 @@ const ProductChart = () => {
       <div>
         <h4 style={{ display: "inline-block", marginRight: "15px" }}>Thống kê theo </h4>
         <Select
-          size="large"
           defaultValue="Tháng"
+          className="select_month"
           style={{
             width: 100,
           }}
@@ -103,7 +104,6 @@ const ProductChart = () => {
           ]}
         />
         <Select
-          size="large"
           defaultValue="Tất cả"
           style={{
             width: 120,
@@ -117,7 +117,6 @@ const ProductChart = () => {
         />
         <Select
           disabled={dropdownProduct.length === 0}
-          size="large"
           defaultValue="Tất cả"
           style={{
             width: 200,
