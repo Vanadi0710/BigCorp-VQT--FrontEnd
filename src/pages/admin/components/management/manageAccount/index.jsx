@@ -32,9 +32,9 @@ const ManageAccount = ({ notify }) => {
     let branchId = selectedBrachId.split("-")[0];
     let role =
       branchType === "FACTORY"
-        ? branchType
+        ? 'PRODUCER'
         : branchType === "WARRANTY_CENTER"
-        ? branchType
+        ? 'WARRANTY'
         : "DISTRIBUTOR";
     try {
       await accountAPI.addAccount({

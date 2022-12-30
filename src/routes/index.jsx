@@ -41,55 +41,73 @@ const Router = ({ notify }) => {
   const auth = useSelector((state) => state.auth);
   const currentRoute = useLocation().pathname;
 
-  if (currentRoute === "/") window.location.href = "/sign-in";
+  if (currentRoute === "/") {
+    let redirectTo = '/sign-in'
+    if(auth.isLoggedIn) {
+      if(auth.account.role === 'ADMIN') redirectTo = '/admin'
+      if(auth.account.role === 'PRODUCER') redirectTo = '/factory'
+      if(auth.account.role === 'WARRANTY') redirectTo = '/warranty-center'
+      if(auth.account.role === 'DISTRIBUTOR') redirectTo = '/distributor'
+    }
+    window.location.href = redirectTo
+  }
+  
   return (
     <Routes>
-      <Route path="admin" element={<Admin />}>
-        <Route path="distributors" element={<DistributorsAdmin />}>
-          <Route path=":branchId" element={<DistributorChart />} />
+      {auth.isLoggedIn && auth.account?.role === "ADMIN" && (
+        <Route path="admin" element={<Admin />}>
+          <Route path="distributors" element={<DistributorsAdmin />}>
+            <Route path=":branchId" element={<DistributorChart />} />
+          </Route>
+          <Route path="factories" element={<FactoriesAdmin />}>
+            <Route path=":branchId" element={<FactoryChart />} />
+          </Route>
+          <Route path="customer" element={<Customer notify={notify} />} />
+          <Route path="warranty-centers" element={<WarrantyCenterAdmin />}>
+            <Route path=":branchId" element={<WarrantyCenterChart />} />
+          </Route>
+          <Route path="manage-product" element={<ManageProduct />} />
+          <Route path="accounts" element={<ManageAccount notify={notify} />} />
+          <Route path="checking-product" element={<TrackingProduct />} />
+          <Route path="statistics-product" element={<ProductChart />} />
+          <Route path="information" element={<Information />} />
         </Route>
-        <Route path="factories" element={<FactoriesAdmin />}>
-          <Route path=":branchId" element={<FactoryChart />} />
+      )}
+
+      {auth.isLoggedIn && auth.account?.role === "PRODUCER" && (
+        <Route path="/factory" element={<Factory />}>
+          <Route path="manufacture" element={<Manufacture notify={notify} />} />
+          <Route path="input-store" element={<InputStore notify={notify} />} />
+          <Route path="handle-requests" element={<HandleWarrantyRequest notify={notify} />} />
+          <Route path="store" element={<FactoryStore />} />
+          <Route path="all-requests" element={<HistoryRequest />} />
+          <Route path="statistic" element={<FactoryStatistic />} />
         </Route>
-        <Route path="customer" element={<Customer notify={notify}/>} />
-        <Route path="warranty-centers" element={<WarrantyCenterAdmin />}>
-          <Route path=":branchId" element={<WarrantyCenterChart />} />
+      )}
+
+      {auth.isLoggedIn && auth.account?.role === "DISTRIBUTOR" && (
+        <Route path="/distributor" element={<Distributor />}>
+          <Route path="cashier" element={<Cashier notify={notify} />} />
+          <Route path="history-cashier" element={<HistoryTransaction />} />
+          <Route path="handle" element={<HandleDIstributorRequest notify={notify} />} />
+          <Route path="create-require" element={<CreateDistributorRequests notify={notify} />} />
+          <Route path="store" element={<DistributorStore />} />
+          <Route path="statistics-require" element={<StaticSalesDistributor />} />
+          <Route path="analysis-product" element={<Analysis />} />
+          <Route path="history-require" element={<HistoryRequirement />} />
         </Route>
-        <Route path="manage-product" element={<ManageProduct />} />
-        <Route path="accounts" element={<ManageAccount notify={notify}/>} />
-        <Route path="checking-product" element={<TrackingProduct />} />
-        <Route path="statistics-product" element={<ProductChart />} />
-        <Route path="information" element={<Information />} />
-      </Route>
+      )}
 
-      <Route path="/factory" element={<Factory />}>
-        <Route path="manufacture" element={<Manufacture notify={notify} />} />
-        <Route path="input-store" element={<InputStore notify={notify} />} />
-        <Route path="handle-requests" element={<HandleWarrantyRequest notify={notify}/>} />
-        <Route path="store" element={<FactoryStore />} />
-        <Route path="all-requests" element={<HistoryRequest />} />
-        <Route path="statistic" element={<FactoryStatistic />} />
-      </Route>
+      {auth.isLoggedIn && auth.account?.role === "WARRANTY" && (
+        <Route path="/warranty-center" element={<WarrantyCenter />}>
+          <Route path="handle-requests" element={<HandleRequest notify={notify} />} />
+          <Route path="activity" element={<Activity notify={notify} />} />
+          <Route path="history-requirement" element={<HistoryRequestWarranty />} />
+          <Route path="store" element={<StoreWarranty />} />
+        </Route>
+      )}
 
-      <Route path="/distributor" element={<Distributor />}>
-        <Route path="cashier" element={<Cashier notify={notify}/>} />
-        <Route path="history-cashier" element={<HistoryTransaction />} />
-        <Route path="handle" element={<HandleDIstributorRequest notify={notify} />} />
-        <Route path="create-require" element={<CreateDistributorRequests notify={notify} />} />
-        <Route path="store" element={<DistributorStore />} />
-        <Route path="statistics-require" element={<StaticSalesDistributor />} />
-        <Route path="analysis-product" element={<Analysis />} />
-        <Route path="history-require" element={<HistoryRequirement />} />
-      </Route>
-
-      <Route path="/warranty-center" element={<WarrantyCenter />}>
-        <Route path="handle-requests" element={<HandleRequest notify={notify}/>} />
-        <Route path="activity" element={<Activity notify={notify}/>}/>
-        <Route path="history-requirement" element={<HistoryRequestWarranty />} />
-        <Route path="store" element={<StoreWarranty />} />
-      </Route>
-
-      <Route path="/sign-in" element={<LogIn notify={notify} />} />
+      {!auth.isLoggedIn && <Route path="/sign-in" element={<LogIn notify={notify} />} />}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

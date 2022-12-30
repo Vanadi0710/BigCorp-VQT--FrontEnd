@@ -38,10 +38,6 @@ const ProductError = ({ notify }) => {
       dataIndex: "date",
     },
     {
-      title: "Cơ sở chuyển tới",
-      dataIndex: "branch",
-    },
-    {
       title: "Chi tiết",
       render: () => (
         <Button type="primary" onClick={showModal}>

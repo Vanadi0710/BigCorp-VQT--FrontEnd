@@ -133,6 +133,8 @@ export function convertProductStatusType(status) {
       return "đã bán";
     case "FAILED_NEED_TO_WARRANTY_CENTER":
       return "lỗi cần bảo hành";
+    case "TAKE_FAILED_TO_WARRANTY_CENTER":
+      return "đưa đến bảo hành";
     case "UNDER_WARRANTY":
       return "đang bảo hành";
     case "WARRANTY_DONE":

@@ -13,7 +13,7 @@ const Factory = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-2 menu">
-              <SideBar setCurrentRoute={setCurrentRoute}/>
+              <SideBar className="me-3"  setCurrentRoute={setCurrentRoute}/>
             </div>
             <main className="col-md-10">
               <Outlet/>

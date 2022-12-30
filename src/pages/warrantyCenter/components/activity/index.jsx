@@ -31,13 +31,13 @@ const Activity = ({notify}) => {
                         children: <ProductDoWarraty notify={notify}/>,
                     },
                     {
-                        label: `Sản phẩm đã xửa xong`,
+                        label: `Sản phẩm đã sửa xong`,
                         key: 'ProductFixed',
                         children: <ProductFixed notify={notify}/>,
 
                     },
                     {
-                        label: `Sản phẩm không thể xửa`,
+                        label: `Sản phẩm không thể sửa`,
                         key: 'NotFixed',
                         children: <NotFixed notify={notify}/>,
                     }

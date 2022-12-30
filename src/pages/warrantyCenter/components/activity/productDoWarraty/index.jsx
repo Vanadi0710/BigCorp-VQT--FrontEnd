@@ -27,14 +27,14 @@ const ProductError = ({ notify }) => {
     },
     {
       title: "Mã sản phẩm",
-      dataIndex: "code",
+      dataIndex: "model",
     },
     {
       title: "Tên sản phẩm",
       dataIndex: "productName",
     },
     {
-      title: "Ngày chuyển tới",
+      title: "Ngày đưa vào sửa",
       dataIndex: "updatedAt",
     },
     {
