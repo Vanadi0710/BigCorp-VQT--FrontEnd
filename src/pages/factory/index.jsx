@@ -1,6 +1,7 @@
 import SideBar from "../factory/components/sidebar";
 import Header from "../../components/header";
 import React, {useState} from "react";
+import './index.css'
 
 import {Outlet, useLocation} from "react-router-dom";
 
@@ -11,7 +12,7 @@ const Factory = () => {
         <Header/>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-2">
+            <div className="col-md-2 menu">
               <SideBar setCurrentRoute={setCurrentRoute}/>
             </div>
             <main className="col-md-10">

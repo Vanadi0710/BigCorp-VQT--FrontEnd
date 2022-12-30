@@ -4,6 +4,7 @@ import React, {useState} from "react";
 
 import {Outlet, useLocation} from "react-router-dom";
 import Sider from "antd/es/layout/Sider";
+import './index.css'
 
 const WarrantyCenter = () => {
     const [currentRoute, setCurrentRoute] = useState('warranty-center')
@@ -12,7 +13,7 @@ const WarrantyCenter = () => {
             <Header/>
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-md-2">
+                    <div className="col-md-2 menu">
                         <SideBar setCurrentRoute={setCurrentRoute}/>
                     </div>
                     <main className="col-md-10">

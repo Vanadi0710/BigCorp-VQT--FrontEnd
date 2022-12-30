@@ -12,9 +12,26 @@
     padding-left: 80px;
   }
 }
-@media screen and (max-width: 368px){
+.button_menu {
+  display: none;
+}
+@media screen and (max-width: 600px){
   .logo-header {
     display: none;
+  }
+  .logo-header {
+    display: none;
+
+  }
+  .header-menu  h3{
+    display: none;
+  }
+  .menu_infor {
+    position: absolute;
+    right: 60px;
+  }
+  .button_menu {
+    display: block;
   }
   
 }
