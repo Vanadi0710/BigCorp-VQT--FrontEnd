@@ -1,13 +1,28 @@
 import "./index.scss";
 import { useState } from "react";
-import { DownOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Space, Modal } from "antd";
+import {DownOutlined, StepBackwardOutlined, UnorderedListOutlined} from "@ant-design/icons";
+import {Button, Dropdown, Space, Modal, Drawer} from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { onLogOut } from "../../redux/action/auth.action";
 import branchAPI from "../../api/branch.api";
 import { convertBranchType } from "../../utils/convertType";
-
+import SideBar from "../../pages/admin/components/sidebar";
+// import SideBar from "../../distributor/admin/components/sidebar";
+// import SideBar from "../../warrantyCenter/admin/components/sidebar";
 const Header = () => {
+  // open menu
+  const [open, setOpen] = useState(false);
+  const [placement, setPlacement] = useState('left');
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onChange = (e) => {
+    setPlacement(e.target.value);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  // end open menu
   const { account } = useSelector((state) => state.auth);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [branch, setBranch] = useState({});
@@ -62,8 +77,9 @@ const Header = () => {
             alt="product"
           />
           <h3>Bigcorp Corporation</h3>
+          <Button className="button_menu" onClick={showDrawer} ><UnorderedListOutlined /></Button>
         </div>
-        <div className="col-2 py-4">
+        <div className="col-2 py-4 menu_infor">
           <Dropdown menu={menuProps}>
             <Button>
               <Space>
@@ -102,6 +118,23 @@ const Header = () => {
           <b>Quy mô:</b>&nbsp; {branch.members}
         </p>
       </Modal>
+      <Drawer
+          placement={placement}
+          width={300}
+          onClose={onClose}
+          open={open}
+          extra={
+            <Space>
+              <Button  onClick={onClose}>
+                <StepBackwardOutlined />
+              </Button>
+            </Space>
+          }
+      >
+       <SideBar/>
+        {/*<SideBar/>*/}
+        {/*<SideBar/>*/}
+      </Drawer>
     </div>
   );
 };
